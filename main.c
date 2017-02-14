@@ -22,7 +22,7 @@ void drawStage(int w, int h, _Bool intro){
     int i;
 
     if(intro)
-        delay=30000;
+        delay=40000;
     else
         delay=0;
 
@@ -35,17 +35,14 @@ void drawStage(int w, int h, _Bool intro){
     
     clear();
 
-    //draw stage walls
-    for(i=0;i<h;i++){
-        mvprintw(i, 0, "|X|");
-        mvprintw(i, w, "|X|");
-        mvprintw(i, (w + (w / 2)), "|X|");
-        usleep(delay);
-        refresh();
-    }
+    //draw labels
+    mvprintw(0, (w/2), "NtetreX");
+    int sxP= ((w + (w / 4)) );
+    mvprintw(0, sxP, "Score");
 
     //draw stage bottom
     int j;
+    i=h;
     for(j=(w + (w / 2));j>=0;j-=3){
         mvprintw(((i - h) + 1), j, "---");
         mvprintw(i, j, "OOO");
@@ -54,10 +51,14 @@ void drawStage(int w, int h, _Bool intro){
     mvprintw(((i - h) + 1), 0, "---");
     mvprintw(i, 0, "OOO");
 
-    //draw labels
-    mvprintw(0, (w/2), "NtetreX");
-    int sxP= ((w + (w / 4)) );
-    mvprintw(0, sxP, "Score");
+    //draw stage walls
+    for(i=0;i<h;i++){
+        mvprintw(i, 0, "|X|");
+        mvprintw(i, w, "|X|");
+        mvprintw(i, (w + (w / 2)), "|X|");
+        usleep(delay);
+        refresh();
+    }
 
     refresh();
 }
