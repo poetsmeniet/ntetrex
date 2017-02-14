@@ -5,9 +5,27 @@
 
 void drawStage(int w, int h, _Bool intro);
 
+struct brick{
+    char body[20];
+};
+
+struct bricks{
+    struct brick brick;
+
+void placeBrick(){
+    struct brick brick1[2]={
+        {.body="◻◻◻◻"},
+        {.body="test"}
+    };
+
+    //mvprintw(4,8,brick1[1].body);
+    mvprintw(4,8,"tjek");
+}
+
 int main(void){
 
     drawStage(35, 20, 1);
+    placeBrick();
 
     sleep(200);
     endwin();
