@@ -56,9 +56,9 @@ void drawStage(int w, int h, _Bool intro){
 
     usleep(delay);
     
-    char label[]="NtetreX";
-    mvprintw(0, (w/2), label);
-    mvprintw(0, (w + (w / 2)) - 10, "Score %d",((w - (w / 2))/2) );
+    mvprintw(0, (w/2), "NtetreX");
+    int rem = ((w + (w / 5)) );
+    mvprintw(0, rem, "Score %d",rem );
 
     refresh();
 }
