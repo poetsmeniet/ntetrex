@@ -3,9 +3,9 @@ Ncurses tetris
 
 Todo:
 
-create stage
-- main stage borders
-- counter stage + predictor
+!create stage
+!- main stage borders
+!- counter stage + predictor + level indic
 define bricks
 - brick movement
 - brick rotation
