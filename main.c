@@ -7,11 +7,9 @@ void drawStage(int w, int h, _Bool intro);
 
 int main(void){
 
-    //getmaxyx(stdscr, max_y, max_x);
-
     drawStage(35, 20, 1);
 
-    sleep(2);
+    sleep(200);
     endwin();
 
     return 0;
@@ -32,13 +30,13 @@ void drawStage(int w, int h, _Bool intro){
     keypad(stdscr, TRUE);
     curs_set(FALSE);
     timeout(0); 
-    
     clear();
 
     //draw labels
     mvprintw(0, (w/2), "NtetreX");
-    int sxP= ((w + (w / 4)) );
-    mvprintw(0, sxP, "Score");
+    int labX=((w + (w / 8)));
+    mvprintw(0, labX, "Level: %d",0);
+    mvprintw(2, labX, "Score: %d",0);
 
     //draw stage bottom
     int j;
