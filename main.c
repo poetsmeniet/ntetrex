@@ -3,31 +3,61 @@
 #include <unistd.h>
 #define DELAY1 20000
 
-void drawStage(int w, int h, _Bool intro);
-
 struct brick{
     char body[20];
+    int x;
+    int y;
 };
 
 struct bricks{
-    struct brick brick;
+    struct brick *brick;
+};
 
-void placeBrick(){
-    struct brick brick1[2]={
-        {.body="◻◻◻◻"},
-        {.body="test"}
+void drawStage(int w, int h, _Bool intro);
+
+
+void initBricks(struct bricks *bricks){
+    struct brick brick1[]={
+        {.body="o\no\noo", .x=10, .y=3},
+        {.body="  ◻\n◻◻◻", .x=10},
+        {.body="◻◻\n ◻\n ◻", .x=10},
+        {.body="◻◻◻\n◻", .x=10}
+    };
+    struct brick brick2[]={
+        {.body="◻◻◻◻", .x=0},
+        {.body="◻\n◻\n◻\n◻", .x=1}
     };
 
-    //mvprintw(4,8,brick1[1].body);
-    mvprintw(4,8,"tjek");
+    bricks[0].brick=brick1;
+    bricks[1].brick=brick2;
+}
+
+void moveBrick(struct bricks *bricks){
+    
+}
+
+void printObjs(struct bricks *bricks){
+    //mvprintw(10,10,bricks->brick[0].body);
+    drawStage(35, 20, 0);
+    mvprintw(10,10,"thomas\n");
+    refresh();
+    //drawStage(35, 20, 0);
 }
 
 int main(void){
 
     drawStage(35, 20, 1);
-    placeBrick();
+    
+    struct bricks bricks;
+    initBricks(&bricks);
 
-    sleep(200);
+
+    while(1){
+        printObjs(&bricks);
+
+        usleep(800000);
+    }
+
     endwin();
 
     return 0;
@@ -37,17 +67,18 @@ void drawStage(int w, int h, _Bool intro){
     int delay;
     int i;
 
-    if(intro)
+    if(intro){
         delay=40000;
-    else
+        //Ncurses init
+        initscr();
+        noecho();
+        keypad(stdscr, TRUE);
+        curs_set(FALSE);
+        timeout(0); 
+    }else{
         delay=0;
+    }
 
-    //Ncurses init
-    initscr();
-    noecho();
-    keypad(stdscr, TRUE);
-    curs_set(FALSE);
-    timeout(0); 
     clear();
 
     //draw labels
@@ -78,3 +109,4 @@ void drawStage(int w, int h, _Bool intro){
 
     refresh();
 }
+
