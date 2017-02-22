@@ -7,13 +7,13 @@
 void drawStage(int w, int h, _Bool intro);
 
 struct stone{
-    int x;
-    int y;
+    float x;
+    float y;
 };
 
 typedef struct brick{
-    int x;
-    int y;
+    float x;
+    float y;
     char body;
     struct stone stn[4];
 }brick;
@@ -24,8 +24,8 @@ typedef struct bricks{
 
 void initBricks(brcks *bP){
 
-    int sX=7;
-    int sY=2;
+    float sX=7.0;
+    float sY=2.0;
 
     brick br1={
         .body='X',
@@ -66,21 +66,39 @@ void gravBrick(brcks *bP){
         int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
         mvprintw(y, x, " ");
     }
-    bP[0].brick[0].y++;
+    bP[0].brick[0].y+=0.05;
+}
+
+void moveBrick(brcks *bP, int mv){
+    if(mv == KEY_UP){
+        bP[0].brick[0].y--;
+    }else if(mv == KEY_DOWN){
+        bP[0].brick[0].y++;
+    }else if(mv == KEY_LEFT){
+        bP[0].brick[0].x--;
+    }else if(mv == KEY_RIGHT){
+        bP[0].brick[0].x++;
+    }else{
+        
+    }   
+    printBrick(bP);
 }
 
 int main(void){
-
     drawStage(35, 20, 1);
     
     brcks b;
     initBricks(&b);
 
     while(1){
+        timeout(0);
+        int mv = getch();
+        moveBrick(&b, mv);
+
         printBrick(&b);
         gravBrick(&b);
-        //usleep(800000);
-        sleep(1);
+        //int mv = 1;
+        usleep(30000);
     }
 
     endwin();
