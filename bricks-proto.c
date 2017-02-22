@@ -12,11 +12,11 @@ typedef struct brick{
     struct stone stn[4];
 }brick;
 
-typedef struct bricks{
+struct bricks{
     struct brick brick[2];
-}b;
+};
 
-void initBricks(b *bricksP){
+void initBricks(struct bricks *bricksP){
     
     int sX=3;
     int sY=10;
@@ -35,17 +35,17 @@ void initBricks(b *bricksP){
         .stn[3].y=0,
     };
 
-    b bricks={
+    struct bricks brcks={
         .brick[0]=br1,
         //.brick[1]=br2
     };
 
-    *bricksP=bricks;
+    *bricksP=brcks;
 }
 
 int main(void){
 
-    b b;
+    struct bricks b;
     initBricks(&b);
 
     printf("test0: x=%i\n",b.brick[0].x);
