@@ -18,11 +18,11 @@ typedef struct brick{
     struct stone stn[4];
 }brick;
 
-struct bricks{
+typedef struct bricks{
     struct brick brick[2];
-};
+}brcks;
 
-void initBricks(struct bricks *bricksP){
+void initBricks(brcks *bP){
 
     int sX=7;
     int sY=2;
@@ -41,35 +41,35 @@ void initBricks(struct bricks *bricksP){
         .stn[3].y=0,
     };
 
-    struct bricks brcks={
+    brcks brcks={
         .brick[0]=br1,
         //.brick[1]=br2
     };
 
-    *bricksP=brcks;
+    *bP=brcks;
 }
 
-void moveBrick(struct bricks *bricksP){
+void moveBrick(brcks *bP){
     
 }
 
-void printObjs(struct bricks *bricksP){
+void printObjs(brcks *bP){
     //drawStage(35, 20, 0);
     int i;
     for(i=0;i<4;i++){
-        int y = bricksP[0].brick[0].y + bricksP[0].brick[0].stn[i].y;
-        int x = bricksP[0].brick[0].x + bricksP[0].brick[0].stn[i].x;
-        mvprintw(y, x, "%c", bricksP[0].brick[0].body);
+        int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
+        int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
+        mvprintw(y, x, "%c", bP[0].brick[0].body);
     }
-
     refresh();
+    bP[0].brick[0].y++;
 }
 
 int main(void){
 
     drawStage(35, 20, 1);
     
-    struct bricks b;
+    brcks b;
     initBricks(&b);
 
     while(1){
