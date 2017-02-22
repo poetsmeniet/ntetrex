@@ -71,7 +71,19 @@ void gravBrick(brcks *bP){
 
 void moveBrick(brcks *bP, int mv){
     if(mv == KEY_UP){
-        bP[0].brick[0].y--;
+        //rotate
+        int i;
+        if(bP[0].brick[0].stn[1].x != 0){
+            for(i=0;i<4;i++){
+                bP[0].brick[0].stn[i].y=i;
+                bP[0].brick[0].stn[i].x=0;
+            }
+        }else{
+            for(i=0;i<4;i++){
+                bP[0].brick[0].stn[i].y=0;
+                bP[0].brick[0].stn[i].x=i;
+            }
+        }
     }else if(mv == KEY_DOWN){
         bP[0].brick[0].y++;
     }else if(mv == KEY_LEFT){
