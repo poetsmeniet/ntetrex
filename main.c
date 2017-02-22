@@ -49,12 +49,7 @@ void initBricks(brcks *bP){
     *bP=brcks;
 }
 
-void moveBrick(brcks *bP){
-    
-}
-
-void printObjs(brcks *bP){
-    //drawStage(35, 20, 0);
+void printBrick(brcks *bP){
     int i;
     for(i=0;i<4;i++){
         int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
@@ -62,6 +57,15 @@ void printObjs(brcks *bP){
         mvprintw(y, x, "%c", bP[0].brick[0].body);
     }
     refresh();
+}
+
+void gravBrick(brcks *bP){
+    int i;
+    for(i=0;i<4;i++){
+        int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
+        int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
+        mvprintw(y, x, " ");
+    }
     bP[0].brick[0].y++;
 }
 
@@ -73,7 +77,8 @@ int main(void){
     initBricks(&b);
 
     while(1){
-        printObjs(&b);
+        printBrick(&b);
+        gravBrick(&b);
         //usleep(800000);
         sleep(1);
     }
