@@ -3,59 +3,79 @@
 #include <unistd.h>
 #define DELAY1 20000
 
-struct brick{
-    char body[20];
+
+void drawStage(int w, int h, _Bool intro);
+
+struct stone{
     int x;
     int y;
 };
 
+typedef struct brick{
+    int x;
+    int y;
+    char body;
+    struct stone stn[4];
+}brick;
+
 struct bricks{
-    struct brick *brick;
+    struct brick brick[2];
 };
 
-void drawStage(int w, int h, _Bool intro);
+void initBricks(struct bricks *bricksP){
 
+    int sX=7;
+    int sY=2;
 
-void initBricks(struct bricks *bricks){
-    struct brick brick1[]={
-        {.body="o\no\noo", .x=10, .y=3},
-        {.body="  ◻\n◻◻◻", .x=10},
-        {.body="◻◻\n ◻\n ◻", .x=10},
-        {.body="◻◻◻\n◻", .x=10}
+    brick br1={
+        .body='X',
+        .x=sX,
+        .y=sY,
+        .stn[0].x=0,
+        .stn[0].y=0,
+        .stn[1].x=1,
+        .stn[1].y=0,
+        .stn[2].x=2,
+        .stn[2].y=0,
+        .stn[3].x=3,
+        .stn[3].y=0,
     };
-    struct brick brick2[]={
-        {.body="◻◻◻◻", .x=0},
-        {.body="◻\n◻\n◻\n◻", .x=1}
+
+    struct bricks brcks={
+        .brick[0]=br1,
+        //.brick[1]=br2
     };
 
-    bricks[0].brick=brick1;
-    bricks[1].brick=brick2;
+    *bricksP=brcks;
 }
 
-void moveBrick(struct bricks *bricks){
+void moveBrick(struct bricks *bricksP){
     
 }
 
-void printObjs(struct bricks *bricks){
-    //mvprintw(10,10,bricks->brick[0].body);
-    drawStage(35, 20, 0);
-    mvprintw(10,10,"thomas\n");
-    refresh();
+void printObjs(struct bricks *bricksP){
     //drawStage(35, 20, 0);
+    int i;
+    for(i=0;i<4;i++){
+        int y = bricksP[0].brick[0].y + bricksP[0].brick[0].stn[i].y;
+        int x = bricksP[0].brick[0].x + bricksP[0].brick[0].stn[i].x;
+        mvprintw(y, x, "%c", bricksP[0].brick[0].body);
+    }
+
+    refresh();
 }
 
 int main(void){
 
     drawStage(35, 20, 1);
     
-    struct bricks bricks;
-    initBricks(&bricks);
-
+    struct bricks b;
+    initBricks(&b);
 
     while(1){
-        printObjs(&bricks);
-
-        usleep(800000);
+        printObjs(&b);
+        //usleep(800000);
+        sleep(1);
     }
 
     endwin();
@@ -68,7 +88,7 @@ void drawStage(int w, int h, _Bool intro){
     int i;
 
     if(intro){
-        delay=40000;
+        delay=10000;
         //Ncurses init
         initscr();
         noecho();
