@@ -131,17 +131,6 @@ void moveBrick(brcks *bP, int mv){
 
 
     printBrick(bP);
-    
-    //detect wall colision
-    //float nY=bP[0].brick[0].y;
-    //float nX=bP[0].brick[0].x;
-    //mvprintw(3,10,"body of next coord (%f,%f): %c", bP[0].brick[3].y, bP[0].brick[3].x, mvinch(nY,nX));
-    //if(mvinch(nY,nX) != '0'){
-    //    printBrick(bP);
-    //}else{
-    //    bP[0].brick[0].y--;
-    //    printBrick(bP);
-    //}
 }
 
 int main(void){
