@@ -4,8 +4,6 @@
 #define DELAY1 20000
 
 
-void drawStage(int w, int h, _Bool intro);
-
 struct stone{
     float x;
     float y;
@@ -21,6 +19,10 @@ typedef struct brick{
 typedef struct bricks{
     struct brick brick[2];
 }brcks;
+
+void drawStage(int w, int h, _Bool intro);
+void moveBrick(brcks *bP, int mv);
+
 
 void initBricks(brcks *bP){
 
@@ -60,13 +62,30 @@ void printBrick(brcks *bP){
 }
 
 void gravBrick(brcks *bP){
-    int i;
-    for(i=0;i<4;i++){
-        int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
-        int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
-        mvprintw(y, x, " ");
+    //detect colision
+    //float nY=(bP[0].brick[0].y + 1);
+    //float nX=bP[0].brick[0].x;
+    float nY1=(bP[0].brick[0].y + bP[0].brick[0].stn[0].y)+1;
+    float nX1=(bP[0].brick[0].x + bP[0].brick[0].stn[0].x);
+    float nY2=(bP[0].brick[0].y + bP[0].brick[0].stn[3].y)+1;
+    float nX2=(bP[0].brick[0].x + bP[0].brick[0].stn[0].x);
+    mvprintw(22,8,"body of next coord (%f,%f): %c - keyup: %i", (bP[0].brick[0].y + 1), bP[0].brick[0].x, mvinch(nY1,nX1), KEY_UP);
+
+    if(mvinch(nY1,nX1) != 'O' || mvinch(nY2,nX2) != 'O'){
+        int i;
+        for(i=0;i<4;i++){
+            int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
+            int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
+            mvprintw(y, x, " ");
+        }
+        bP[0].brick[0].y+=0.05;
+    }else{
+        //respawn
+        bP[0].brick[0].y=2;
+        bP[0].brick[0].x=7;
+        //moveBrick(bP, 259);
     }
-    bP[0].brick[0].y+=0.05;
+
 }
 
 void moveBrick(brcks *bP, int mv){
@@ -93,7 +112,19 @@ void moveBrick(brcks *bP, int mv){
     }else{
         
     }   
+
     printBrick(bP);
+    
+    //detect colision
+    //float nY=bP[0].brick[0].y;
+    //float nX=bP[0].brick[0].x;
+    //mvprintw(3,10,"body of next coord (%f,%f): %c", bP[0].brick[3].y, bP[0].brick[3].x, mvinch(nY,nX));
+    //if(mvinch(nY,nX) != '0'){
+    //    printBrick(bP);
+    //}else{
+    //    bP[0].brick[0].y--;
+    //    printBrick(bP);
+    //}
 }
 
 int main(void){
