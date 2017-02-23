@@ -134,8 +134,14 @@ void moveBrick(brcks *bP, int mv){
     printBrick(bP);
 }
 
+void detectLine(){
+
+}
+
 int main(void){
-    drawStage(15, 20, 1);
+    int width = 15;
+    int height = 20;
+    drawStage(width, height, 1);
     
     brcks b;
     initBricks(&b);
