@@ -134,8 +134,29 @@ void moveBrick(brcks *bP, int mv){
     printBrick(bP);
 }
 
-void detectLine(){
+void detectLine(int width, int height){
+    int i;
+    int j = 0;
+    int cnt = 0;
+    for(i=0;i<=width;i++){
+        if(mvinch(j, i) == 'O')
+            cnt++;
 
+        if(i >= width){
+            if(cnt == 11){
+                move(j, 0);
+                deleteln();
+                move(2, 0);
+                insertln();
+                mvprintw(2, 0, "|X|            |X|    |X|");
+            }
+            i = 3;
+            j++;
+            cnt = 0;
+        }
+        if(j == height)
+            break;
+    }
 }
 
 int main(void){
@@ -150,10 +171,9 @@ int main(void){
         timeout(0);
         int mv = getch();
         moveBrick(&b, mv);
-
         printBrick(&b);
         gravBrick(&b);
-        //int mv = 1;
+        detectLine(width, height);
         usleep(30000);
     }
 
@@ -184,7 +204,6 @@ void drawStage(int w, int h, _Bool intro){
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX=((w + (w / 8)));
     mvprintw(0, labX+2, "::%d",0);
-    mvprintw(2, labX+2, ": %d",0);
 
     //draw stage bottom
     int j;
