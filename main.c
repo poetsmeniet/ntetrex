@@ -88,6 +88,23 @@ void gravBrick(brcks *bP){
 }
 
 void moveBrick(brcks *bP, int mv){
+    //wall colisions
+    int i;
+    int colR=0;
+    int colL=0;
+    for(i=0;i<4;i++){
+        float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
+        float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)+1;
+        if(mvinch(nY,nX) == '|')
+            colR++;
+
+        nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
+        nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)-1;
+        if(mvinch(nY,nX) == '|')
+            colL++;
+    }
+
+    //movement
     if(mv == KEY_UP){
         //rotate
         int i;
@@ -104,17 +121,18 @@ void moveBrick(brcks *bP, int mv){
         }
     }else if(mv == KEY_DOWN){
         bP[0].brick[0].y++;
-    }else if(mv == KEY_LEFT){
+    }else if(mv == KEY_LEFT && colL == 0){
         bP[0].brick[0].x--;
-    }else if(mv == KEY_RIGHT){
+    }else if(mv == KEY_RIGHT && colR == 0){
         bP[0].brick[0].x++;
     }else{
         
     }   
 
+
     printBrick(bP);
     
-    //detect colision
+    //detect wall colision
     //float nY=bP[0].brick[0].y;
     //float nX=bP[0].brick[0].x;
     //mvprintw(3,10,"body of next coord (%f,%f): %c", bP[0].brick[3].y, bP[0].brick[3].x, mvinch(nY,nX));
