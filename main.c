@@ -63,13 +63,15 @@ void printBrick(brcks *bP){
 
 void gravBrick(brcks *bP){
     //detect colision with floor & other bricks
-    float nY1=(bP[0].brick[0].y + bP[0].brick[0].stn[0].y)+1;
-    float nX1=(bP[0].brick[0].x + bP[0].brick[0].stn[0].x);
-    float nY2=(bP[0].brick[0].y + bP[0].brick[0].stn[3].y)+1;
-    float nX2=(bP[0].brick[0].x + bP[0].brick[0].stn[0].x);
-    mvprintw(22,8,"body of next coord (%f,%f): %c - keyup: %i", (bP[0].brick[0].y + 1), bP[0].brick[0].x, mvinch(nY1,nX1), KEY_UP);
-
-    if(mvinch(nY1,nX1) != 'O' || mvinch(nY2,nX2) != 'O'){
+    int i;
+    int col=0;
+    for(i=0;i<4;i++){
+        float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y)+1;
+        float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x);
+        if(mvinch(nY,nX) == 'O' && nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i+1].y))
+            col++;
+    }
+    if(col == 0){
         int i;
         for(i=0;i<4;i++){
             int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
