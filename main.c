@@ -28,7 +28,7 @@ void initBricks(brcks *bP){
     float sY=2.0;
 
     brick br1={
-        .body='X',
+        .body='O',
         .x=sX,
         .y=sY,
         .stn[0].x=0,
