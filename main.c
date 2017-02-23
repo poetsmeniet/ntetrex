@@ -71,6 +71,7 @@ void gravBrick(brcks *bP){
         if(mvinch(nY,nX) == 'O' && nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i+1].y))
             col++;
     }
+    //move brick
     if(col == 0){
         int i;
         for(i=0;i<4;i++){
@@ -134,7 +135,7 @@ void moveBrick(brcks *bP, int mv){
 }
 
 int main(void){
-    drawStage(35, 20, 1);
+    drawStage(15, 20, 1);
     
     brcks b;
     initBricks(&b);
@@ -174,10 +175,10 @@ void drawStage(int w, int h, _Bool intro){
     clear();
 
     //draw labels
-    mvprintw(0, (w/2), "NtetreX");
+    mvprintw(0, (w/2)-1, "NtetreX");
     int labX=((w + (w / 8)));
-    mvprintw(0, labX, "Level: %d",0);
-    mvprintw(2, labX, "Score: %d",0);
+    mvprintw(0, labX+2, "::%d",0);
+    mvprintw(2, labX+2, ": %d",0);
 
     //draw stage bottom
     int j;
