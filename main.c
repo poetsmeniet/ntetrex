@@ -62,9 +62,7 @@ void printBrick(brcks *bP){
 }
 
 void gravBrick(brcks *bP){
-    //detect colision
-    //float nY=(bP[0].brick[0].y + 1);
-    //float nX=bP[0].brick[0].x;
+    //detect colision with floor & other bricks
     float nY1=(bP[0].brick[0].y + bP[0].brick[0].stn[0].y)+1;
     float nX1=(bP[0].brick[0].x + bP[0].brick[0].stn[0].x);
     float nY2=(bP[0].brick[0].y + bP[0].brick[0].stn[3].y)+1;
@@ -83,7 +81,6 @@ void gravBrick(brcks *bP){
         //respawn
         bP[0].brick[0].y=2;
         bP[0].brick[0].x=7;
-        //moveBrick(bP, 259);
     }
 
 }
@@ -179,10 +176,12 @@ void drawStage(int w, int h, _Bool intro){
     for(j=(w + (w / 2));j>=0;j-=3){
         mvprintw(((i - h) + 1), j, "---");
         mvprintw(i, j, "OOO");
+        mvprintw(i+1, j, "OOO");
         refresh();
     }
     mvprintw(((i - h) + 1), 0, "---");
     mvprintw(i, 0, "OOO");
+    mvprintw(i+1, 0, "OOO");
 
     //draw stage walls
     for(i=0;i<h;i++){
