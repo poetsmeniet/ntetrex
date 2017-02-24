@@ -168,7 +168,6 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[0].stn[3].x+=1;
                 bP[0].brick[0].stn[3].y-=2;
                 mvprintw(23,3,"hmm: A-B");
-           
             }else if(bP[0].brick[0].stn[0].x == 0 && bP[0].brick[0].stn[0].y == 1){
                 //turn ccw B->C
                 bP[0].brick[0].stn[0].x+=1;
@@ -179,7 +178,7 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[0].stn[3].x-=2;
                 mvprintw(23,3,"hmm: B-C");
             }else if(bP[0].brick[0].stn[0].x == 1 && bP[0].brick[0].stn[0].y == 2){
-                //turn ccw B->C
+                //turn ccw C->D
                 bP[0].brick[0].stn[0].x+=1;
                 bP[0].brick[0].stn[0].y-=2;
                 bP[0].brick[0].stn[1].x+=2;
@@ -188,7 +187,7 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[0].stn[3].y+=1;
                 mvprintw(23,3,"hmm: C-D");
             }else if(bP[0].brick[0].stn[0].x == 2 && bP[0].brick[0].stn[0].y == 0){
-                //turn ccw B->C
+                //turn ccw D->A
                 bP[0].brick[0].stn[0].x-=2;
                 bP[0].brick[0].stn[1].x-=1;
                 bP[0].brick[0].stn[1].y-=1;
