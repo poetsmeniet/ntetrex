@@ -144,13 +144,13 @@ void moveBrick(brcks *bP, int mv){
             case 0:
                 if(bP[0].brick[0].stn[1].x != 0){
                     for(i=0;i<4;i++){
-                        bP[0].brick[0].stn[i].y=i;
-                        bP[0].brick[0].stn[i].x=0;
+                        bP[0].brick[0].stn[i].x-=i;
+                        bP[0].brick[0].stn[i].y+=i;
                     }
                 }else{
                     for(i=0;i<4;i++){
-                        bP[0].brick[0].stn[i].y=0;
-                        bP[0].brick[0].stn[i].x=i;
+                        bP[0].brick[0].stn[i].x+=i;
+                        bP[0].brick[0].stn[i].y-=i;
                     }
                 }
                 break;
@@ -173,7 +173,6 @@ void moveBrick(brcks *bP, int mv){
     }else{
         
     }   
-
 
     printBrick(bP);
 }
@@ -232,7 +231,6 @@ void drawStage(int w, int h, _Bool intro){
 
     if(intro){
         delay=10000;
-        //Ncurses init
         initscr();
         noecho();
         keypad(stdscr, TRUE);
@@ -273,4 +271,3 @@ void drawStage(int w, int h, _Bool intro){
 
     refresh();
 }
-
