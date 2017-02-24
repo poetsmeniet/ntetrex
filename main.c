@@ -3,7 +3,6 @@
 #include <unistd.h>
 #define DELAY1 20000
 
-
 struct stone{
     float x;
     float y;
@@ -12,17 +11,17 @@ struct stone{
 typedef struct brick{
     float x;
     float y;
+    int id;
     char body;
     struct stone stn[4];
 }brick;
 
 typedef struct bricks{
-    struct brick brick[2];
+    struct brick brick[4];
 }brcks;
 
 void drawStage(int w, int h, _Bool intro);
 void moveBrick(brcks *bP, int mv);
-
 
 void initBricks(brcks *bP){
 
@@ -30,6 +29,7 @@ void initBricks(brcks *bP){
     float sY=2.0;
 
     brick br1={
+        .id=0,
         .body='O',
         .x=sX,
         .y=sY,
@@ -43,9 +43,40 @@ void initBricks(brcks *bP){
         .stn[3].y=0,
     };
 
+    brick br2={
+        .id=1,
+        .body='O',
+        .x=sX,
+        .y=sY,
+        .stn[0].x=0,
+        .stn[0].y=0,
+        .stn[1].x=0,
+        .stn[1].y=1,
+        .stn[2].x=1,
+        .stn[2].y=0,
+        .stn[3].x=1,
+        .stn[3].y=1,
+    };
+
+    brick br3={
+        .id=2,
+        .body='O',
+        .x=sX,
+        .y=sY,
+        .stn[0].x=0,
+        .stn[0].y=0,
+        .stn[1].x=1,
+        .stn[1].y=0,
+        .stn[2].x=1,
+        .stn[2].y=1,
+        .stn[3].x=1,
+        .stn[3].y=2,
+    };
+
     brcks brcks={
         .brick[0]=br1,
-        //.brick[1]=br2
+        .brick[1]=br2,
+        .brick[2]=br3
     };
 
     *bP=brcks;
@@ -109,16 +140,29 @@ void moveBrick(brcks *bP, int mv){
     if(mv == KEY_UP){
         //rotate
         int i;
-        if(bP[0].brick[0].stn[1].x != 0){
-            for(i=0;i<4;i++){
-                bP[0].brick[0].stn[i].y=i;
-                bP[0].brick[0].stn[i].x=0;
-            }
-        }else{
-            for(i=0;i<4;i++){
-                bP[0].brick[0].stn[i].y=0;
-                bP[0].brick[0].stn[i].x=i;
-            }
+        switch(bP[0].brick[0].id){
+            case 0:
+                if(bP[0].brick[0].stn[1].x != 0){
+                    for(i=0;i<4;i++){
+                        bP[0].brick[0].stn[i].y=i;
+                        bP[0].brick[0].stn[i].x=0;
+                    }
+                }else{
+                    for(i=0;i<4;i++){
+                        bP[0].brick[0].stn[i].y=0;
+                        bP[0].brick[0].stn[i].x=i;
+                    }
+                }
+                break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        default:
+
+            break;
         }
     }else if(mv == KEY_DOWN){
         bP[0].brick[0].y++;
