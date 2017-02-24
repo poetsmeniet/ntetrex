@@ -14,8 +14,10 @@ define bricks
 !  - left, right, down
   - spacebar = drop down
 !- brick rotation
-  - add bricks
-!- spawning
+!  - add bricks
+  - add current brick to struct
+  - rewrite floot col detection for new bricks
+- integrate random brick spawning
 - prediction
 !- create gravity
 !float movement increments?
