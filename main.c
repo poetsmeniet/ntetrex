@@ -204,7 +204,7 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
-        bP->curBr = (cB + 1) % 3;
+        bP->curBr = rand() % 3;
         bP[0].brick[cB].y = 2;
         bP[0].brick[cB].x = 7;
     }
