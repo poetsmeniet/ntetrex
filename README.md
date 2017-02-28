@@ -12,13 +12,12 @@ define bricks
 !  - detect col using .. man 3 inch?
 !- brick movement
 !  - left, right, down
-  - spacebar = drop down
 !- brick rotation
 !  - add bricks
   - add current brick to struct
-  - rewrite floot col detection for new bricks
+!  - rewrite floor col detection for new bricks
 - integrate random brick spawning
-- prediction
+- prediction bar
 !- create gravity
 !float movement increments?
 collision detection
@@ -28,5 +27,7 @@ collision detection
 !  - detect walls in brickMove
 line detection
 - expolosion anim
+- add scores
+- add dificulty level
 
 - set keboard delay repeat to 0?
