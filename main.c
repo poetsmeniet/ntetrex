@@ -18,23 +18,25 @@ typedef struct brick{
 
 typedef struct bricks{
     int curBr;
+    int score;
     struct brick brick[4];
 }brcks;
 
-void drawStage(int w, int h, _Bool intro);
+void drawStage(int w, int h, _Bool intro, brcks *bP);
 void moveBrick(brcks *bP, int mv);
 void initBricks(brcks *bP);
 void printBrick(brcks *bP);
 void gravBrick(brcks *bP);
-void detectLine(int width, int height);
+void detectLine(int width, int height, brcks *bP);
+void drawLabels(int w, int h, brcks *bP);
 
 int main(void){
-    int width = 15;
-    int height = 20;
-    drawStage(width, height, 1);
-    
     brcks b;
     initBricks(&b);
+
+    int width = 15;
+    int height = 20;
+    drawStage(width, height, 1, &b);
 
     while(1){
         timeout(0);
@@ -42,7 +44,8 @@ int main(void){
         moveBrick(&b, mv);
         printBrick(&b);
         gravBrick(&b);
-        detectLine(width, height);
+        detectLine(width, height, &b);
+        drawLabels(width, height, &b);
         usleep(30000);
     }
 
@@ -51,7 +54,14 @@ int main(void){
     return 0;
 }
 
-void drawStage(int w, int h, _Bool intro){
+void drawLabels(int w, int h, brcks *bP){
+    //draw labels
+    mvprintw(0, (w/2)-1, "NtetreX");
+    int labX = ((w + (w / 8)));
+    mvprintw(0, labX+2, " %d",bP[0].score);
+}
+
+void drawStage(int w, int h, _Bool intro, brcks *bP){
     int delay;
     int i;
 
@@ -71,7 +81,7 @@ void drawStage(int w, int h, _Bool intro){
     //draw labels
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
-    mvprintw(0, labX+2, "::%d",0);
+    mvprintw(0, labX+2, " %d",bP[0].score);
 
     //draw stage bottom
     int j;
@@ -149,6 +159,7 @@ void initBricks(brcks *bP){
 
     brcks brcks = {
         .curBr = 0,
+        .score = 0,
         .brick[0] = br1,
         .brick[1] = br2,
         .brick[2] = br3
@@ -288,7 +299,7 @@ void moveBrick(brcks *bP, int mv){
     printBrick(bP);
 }
 
-void detectLine(int width, int height){
+void detectLine(int width, int height, brcks *bP){
     int i;
     int j = 0;
     int cnt = 0;
@@ -303,6 +314,7 @@ void detectLine(int width, int height){
                 move(2, 0);
                 insertln();
                 mvprintw(2, 0, "|X|            |X|    |X|");
+                bP->score++;
             }
             i = 3;
             j++;
