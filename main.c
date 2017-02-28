@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 #define DELAY1 40000
 
 struct stone{
@@ -108,66 +109,6 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     refresh();
 }
 
-void initBricks(brcks *bP){
-    float sX = 7.0;
-    float sY = 2.0;
-
-    brick br1 = {
-        .id = 0,
-        .body = 'O',
-        .x = sX,
-        .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 1,
-        .stn[1].y = 0,
-        .stn[2].x = 2,
-        .stn[2].y = 0,
-        .stn[3].x = 3,
-        .stn[3].y = 0,
-    };
-
-    brick br2 = {
-        .id = 1,
-        .body = 'O',
-        .x = sX,
-        .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 0,
-        .stn[1].y = 1,
-        .stn[2].x = 1,
-        .stn[2].y = 0,
-        .stn[3].x = 1,
-        .stn[3].y = 1,
-    };
-
-    brick br3 = {
-        .id = 2,
-        .body = 'O',
-        .x = sX,
-        .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 1,
-        .stn[1].y = 0,
-        .stn[2].x = 1,
-        .stn[2].y = 1,
-        .stn[3].x = 1,
-        .stn[3].y = 2,
-    };
-
-    brcks brcks = {
-        .curBr = 0,
-        .score = 0,
-        .brick[0] = br1,
-        .brick[1] = br2,
-        .brick[2] = br3
-    };
-
-    *bP = brcks;
-}
-
 void printBrick(brcks *bP){
     int i;
     int cB = bP->curBr;
@@ -204,6 +145,17 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
+        bP->curBr = rand() % 3;
+        bP[0].brick[cB].y = 2;
+        bP[0].brick[cB].x = 7;
+    }
+
+    if(bP[0].brick[cB].x > 22){
+        mvprintw((bP[0].brick[cB].y + 1), bP[0].brick[cB].x, "I'm FREE!");
+        refresh();
+        sleep(1);
+    	drawStage(15, 20, 1, bP);
+        bP->score += 4;
         bP->curBr = rand() % 3;
         bP[0].brick[cB].y = 2;
         bP[0].brick[cB].x = 7;
@@ -344,4 +296,64 @@ void detectLine(int width, int height, brcks *bP){
         if(j == height)
             break;
     }
+}
+
+void initBricks(brcks *bP){
+    float sX = 7.0;
+    float sY = 2.0;
+
+    brick br1 = {
+        .id = 0,
+        .body = 'O',
+        .x = sX,
+        .y = sY,
+        .stn[0].x = 0,
+        .stn[0].y = 0,
+        .stn[1].x = 1,
+        .stn[1].y = 0,
+        .stn[2].x = 2,
+        .stn[2].y = 0,
+        .stn[3].x = 3,
+        .stn[3].y = 0,
+    };
+
+    brick br2 = {
+        .id = 1,
+        .body = 'O',
+        .x = sX,
+        .y = sY,
+        .stn[0].x = 0,
+        .stn[0].y = 0,
+        .stn[1].x = 0,
+        .stn[1].y = 1,
+        .stn[2].x = 1,
+        .stn[2].y = 0,
+        .stn[3].x = 1,
+        .stn[3].y = 1,
+    };
+
+    brick br3 = {
+        .id = 2,
+        .body = 'O',
+        .x = sX,
+        .y = sY,
+        .stn[0].x = 0,
+        .stn[0].y = 0,
+        .stn[1].x = 1,
+        .stn[1].y = 0,
+        .stn[2].x = 1,
+        .stn[2].y = 1,
+        .stn[3].x = 1,
+        .stn[3].y = 2,
+    };
+
+    brcks brcks = {
+        .curBr = 0,
+        .score = 0,
+        .brick[0] = br1,
+        .brick[1] = br2,
+        .brick[2] = br3
+    };
+
+    *bP = brcks;
 }
