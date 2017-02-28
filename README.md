@@ -30,6 +30,6 @@ collision detection
 !  - detect walls in brickMove
 line detection
 !- detect + remove line
-- expolosion anim
+!- expolosion anim
 !- add scores
 - add dificulty level
