@@ -97,12 +97,13 @@ void gravBrick(brcks *bP){
     int i;
     int col=0;
     for(i=0;i<4;i++){
-        if(bP[0].brick[0].id == 0){
-            float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y)+1;
-            float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x);
-            if(mvinch(nY,nX) == 'O' && nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i+1].y))
-                col++;
-        }
+        float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y)+1;
+        float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x);
+        if(mvinch(nY,nX) == 'O' && \
+                nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i+1].y) && \
+                nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i-1].y) \
+                )
+            col++;
     }
     //move brick
     if(col == 0){
