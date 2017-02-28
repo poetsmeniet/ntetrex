@@ -6,8 +6,8 @@ Todo:
 !- make use of ws consistent
 !- move functions for readability
 
-- bug: brick breaks free :D
-    - or make it a feature.. extra points?
+!- bug: brick breaks free :D
+!    - or make it a feature.. extra points?
 - fix: interrupt down key
 
 create stage
@@ -23,7 +23,7 @@ define bricks
 !  - add bricks
 !  - add current brick to struct
 !  - rewrite floor col detection for new bricks
-- integrate random brick spawning
+!- integrate random brick spawning
 - prediction bar
 !- create gravity
 !float movement increments?
