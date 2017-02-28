@@ -3,6 +3,9 @@ Ncurses tetris
 
 Todo:
 
+!- make use of ws consistent
+!- move functions for readability
+
 create stage
 !- main stage borders
 !- counter stage + predictor + level indic
@@ -14,7 +17,7 @@ define bricks
 !  - left, right, down
 !- brick rotation
 !  - add bricks
-  - add current brick to struct
+!  - add current brick to struct
 !  - rewrite floor col detection for new bricks
 - integrate random brick spawning
 - prediction bar
@@ -26,8 +29,7 @@ collision detection
 !  - fix bug: col det on all stones
 !  - detect walls in brickMove
 line detection
+!- detect + remove line
 - expolosion anim
-- add scores
+!- add scores
 - add dificulty level
-
-- set keboard delay repeat to 0?
