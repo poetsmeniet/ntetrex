@@ -55,60 +55,6 @@ int main(void){
     return 0;
 }
 
-void drawLabels(int w, int h, brcks *bP){
-    //draw labels
-    mvprintw(0, (w/2)-1, "NtetreX");
-    int labX = ((w + (w / 8)));
-    mvprintw(0, labX+2, " %d",bP[0].score);
-}
-
-void drawStage(int w, int h, _Bool intro, brcks *bP){
-    int delay;
-    int i;
-
-    if(intro){
-        delay = 10000;
-        initscr();
-        noecho();
-        keypad(stdscr, TRUE);
-        curs_set(FALSE);
-        timeout(0); 
-    }else{
-        delay = 0;
-    }
-
-    clear();
-
-    //draw labels
-    mvprintw(0, (w/2)-1, "NtetreX");
-    int labX = ((w + (w / 8)));
-    mvprintw(0, labX+2, " %d",bP[0].score);
-
-    //draw stage bottom
-    int j;
-    i = h;
-    for(j = (w + (w / 2)-2);j >= 0;j -= 3){
-        mvprintw(((i - h) + 1), j, "---");
-        mvprintw(i, j, "OOO");
-        mvprintw(i+1, j, "OOO");
-        refresh();
-    }
-    //mvprintw(((i - h) + 1), 0, "");
-    mvprintw(i, 0, "OOO");
-    mvprintw(i+1, 0, "OOO");
-
-    //draw stage walls
-    for(i = 0;i < h;i++){
-        mvprintw(i, 0, "|X|");
-        mvprintw(i, w, "|X|");
-        mvprintw(i, (w + (w / 2)), "|");
-        usleep(delay);
-        refresh();
-    }
-
-    refresh();
-}
-
 void printBrick(brcks *bP){
     int i;
     int cB = bP->curBr;
@@ -160,6 +106,13 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y = 2;
         bP[0].brick[cB].x = 7;
     }
+}
+
+void drawLabels(int w, int h, brcks *bP){
+    //draw labels
+    mvprintw(0, (w/2)-1, "NtetreX");
+    int labX = ((w + (w / 8)));
+    mvprintw(0, labX+2, " %d",bP[0].score);
 }
 
 void moveBrick(brcks *bP, int mv){
@@ -296,6 +249,52 @@ void detectLine(int width, int height, brcks *bP){
         if(j == height)
             break;
     }
+}
+
+void drawStage(int w, int h, _Bool intro, brcks *bP){
+    int delay;
+    int i;
+
+    if(intro){
+        delay = 10000;
+        initscr();
+        noecho();
+        keypad(stdscr, TRUE);
+        curs_set(FALSE);
+        timeout(0); 
+    }else{
+        delay = 0;
+    }
+
+    clear();
+
+    //draw labels
+    mvprintw(0, (w/2)-1, "NtetreX");
+    int labX = ((w + (w / 8)));
+    mvprintw(0, labX+2, " %d",bP[0].score);
+
+    //draw stage bottom
+    int j;
+    i = h;
+    for(j = (w + (w / 2)-2);j >= 0;j -= 3){
+        mvprintw(((i - h) + 1), j, "---");
+        mvprintw(i, j, "OOO");
+        mvprintw(i+1, j, "OOO");
+        refresh();
+    }
+    mvprintw(i, 0, "OOO");
+    mvprintw(i+1, 0, "OOO");
+
+    //draw stage walls
+    for(i = 0;i < h;i++){
+        mvprintw(i, 0, "|X|");
+        mvprintw(i, w, "|X|");
+        mvprintw(i, (w + (w / 2)), "|");
+        usleep(delay);
+        refresh();
+    }
+
+    refresh();
 }
 
 void initBricks(brcks *bP){
