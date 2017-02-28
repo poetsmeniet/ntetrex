@@ -130,12 +130,12 @@ void moveBrick(brcks *bP, int mv){
     for(i=0;i<4;i++){
         float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
         float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)+1;
-        if(mvinch(nY,nX) == '|')
+        if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
             colR++;
 
         nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
         nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)-1;
-        if(mvinch(nY,nX) == '|')
+        if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
             colL++;
     }
 
