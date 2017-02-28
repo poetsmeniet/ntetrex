@@ -23,9 +23,82 @@ typedef struct bricks{
 
 void drawStage(int w, int h, _Bool intro);
 void moveBrick(brcks *bP, int mv);
+void initBricks(brcks *bP);
+void printBrick(brcks *bP);
+void gravBrick(brcks *bP);
+void detectLine(int width, int height);
+
+int main(void){
+    int width = 15;
+    int height = 20;
+    drawStage(width, height, 1);
+    
+    brcks b;
+    initBricks(&b);
+
+    while(1){
+        timeout(0);
+        int mv = getch();
+        moveBrick(&b, mv);
+        printBrick(&b);
+        gravBrick(&b);
+        detectLine(width, height);
+        usleep(30000);
+    }
+
+    endwin();
+
+    return 0;
+}
+
+void drawStage(int w, int h, _Bool intro){
+    int delay;
+    int i;
+
+    if(intro){
+        delay = 10000;
+        initscr();
+        noecho();
+        keypad(stdscr, TRUE);
+        curs_set(FALSE);
+        timeout(0); 
+    }else{
+        delay = 0;
+    }
+
+    clear();
+
+    //draw labels
+    mvprintw(0, (w/2)-1, "NtetreX");
+    int labX = ((w + (w / 8)));
+    mvprintw(0, labX+2, "::%d",0);
+
+    //draw stage bottom
+    int j;
+    i = h;
+    for(j = (w + (w / 2));j >= 0;j -= 3){
+        mvprintw(((i - h) + 1), j, "---");
+        mvprintw(i, j, "OOO");
+        mvprintw(i+1, j, "OOO");
+        refresh();
+    }
+    mvprintw(((i - h) + 1), 0, "---");
+    mvprintw(i, 0, "OOO");
+    mvprintw(i+1, 0, "OOO");
+
+    //draw stage walls
+    for(i = 0;i < h;i++){
+        mvprintw(i, 0, "|X|");
+        mvprintw(i, w, "|X|");
+        mvprintw(i, (w + (w / 2)), "|X|");
+        usleep(delay);
+        refresh();
+    }
+
+    refresh();
+}
 
 void initBricks(brcks *bP){
-
     float sX = 7.0;
     float sY = 2.0;
 
@@ -200,7 +273,6 @@ void moveBrick(brcks *bP, int mv){
             }
             break;
         default:
-
             break;
         }
     }else if(mv == KEY_DOWN){
@@ -239,74 +311,4 @@ void detectLine(int width, int height){
         if(j == height)
             break;
     }
-}
-
-int main(void){
-    int width = 15;
-    int height = 20;
-    drawStage(width, height, 1);
-    
-    brcks b;
-    initBricks(&b);
-
-    while(1){
-        timeout(0);
-        int mv = getch();
-        moveBrick(&b, mv);
-        printBrick(&b);
-        gravBrick(&b);
-        detectLine(width, height);
-        usleep(30000);
-    }
-
-    endwin();
-
-    return 0;
-}
-
-void drawStage(int w, int h, _Bool intro){
-    int delay;
-    int i;
-
-    if(intro){
-        delay = 10000;
-        initscr();
-        noecho();
-        keypad(stdscr, TRUE);
-        curs_set(FALSE);
-        timeout(0); 
-    }else{
-        delay = 0;
-    }
-
-    clear();
-
-    //draw labels
-    mvprintw(0, (w/2)-1, "NtetreX");
-    int labX = ((w + (w / 8)));
-    mvprintw(0, labX+2, "::%d",0);
-
-    //draw stage bottom
-    int j;
-    i = h;
-    for(j = (w + (w / 2));j >= 0;j -= 3){
-        mvprintw(((i - h) + 1), j, "---");
-        mvprintw(i, j, "OOO");
-        mvprintw(i+1, j, "OOO");
-        refresh();
-    }
-    mvprintw(((i - h) + 1), 0, "---");
-    mvprintw(i, 0, "OOO");
-    mvprintw(i+1, 0, "OOO");
-
-    //draw stage walls
-    for(i = 0;i < h;i++){
-        mvprintw(i, 0, "|X|");
-        mvprintw(i, w, "|X|");
-        mvprintw(i, (w + (w / 2)), "|X|");
-        usleep(delay);
-        refresh();
-    }
-
-    refresh();
 }
