@@ -6,6 +6,10 @@ Todo:
 !- make use of ws consistent
 !- move functions for readability
 
+- bug: brick breaks free :D
+    - or make it a feature.. extra points?
+- fix: interrupt down key
+
 create stage
 !- main stage borders
 !- counter stage + predictor + level indic
