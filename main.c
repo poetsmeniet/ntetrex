@@ -17,6 +17,7 @@ typedef struct brick{
 }brick;
 
 typedef struct bricks{
+    int curBr;
     struct brick brick[4];
 }brcks;
 
@@ -74,9 +75,10 @@ void initBricks(brcks *bP){
     };
 
     brcks brcks={
-        .brick[2]=br1,
+        .curBr=0,
+        .brick[0]=br1,
         .brick[1]=br2,
-        .brick[0]=br3
+        .brick[2]=br3
     };
 
     *bP=brcks;
@@ -84,10 +86,11 @@ void initBricks(brcks *bP){
 
 void printBrick(brcks *bP){
     int i;
+    int cB = bP->curBr;
     for(i=0;i<4;i++){
-        int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
-        int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
-        mvprintw(y, x, "%c", bP[0].brick[0].body);
+        int y = bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y;
+        int x = bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x;
+        mvprintw(y, x, "%c", bP[0].brick[cB].body);
     }
     refresh();
 }
@@ -96,12 +99,13 @@ void gravBrick(brcks *bP){
     //detect colision with floor & other bricks
     int i;
     int col=0;
+    int cB = bP->curBr;
     for(i=0;i<4;i++){
-        float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y)+1;
-        float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x);
+        float nY=(bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y)+1;
+        float nX=(bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x);
         if(mvinch(nY,nX) == 'O' && \
-                nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i+1].y) && \
-                nY != (bP[0].brick[0].y + bP[0].brick[0].stn[i-1].y) \
+                nY != (bP[0].brick[cB].y + bP[0].brick[cB].stn[i+1].y) && \
+                nY != (bP[0].brick[cB].y + bP[0].brick[cB].stn[i-1].y) \
                 )
             col++;
     }
@@ -109,32 +113,33 @@ void gravBrick(brcks *bP){
     if(col == 0){
         int i;
         for(i=0;i<4;i++){
-            int y = bP[0].brick[0].y + bP[0].brick[0].stn[i].y;
-            int x = bP[0].brick[0].x + bP[0].brick[0].stn[i].x;
+            int y = bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y;
+            int x = bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x;
             mvprintw(y, x, " ");
         }
-        bP[0].brick[0].y+=0.05;
+        bP[0].brick[cB].y+=0.05;
     }else{
         //respawn
-        bP[0].brick[0].y=2;
-        bP[0].brick[0].x=7;
+        bP->curBr = (cB + 1) % 3;
+        bP[0].brick[cB].y=2;
+        bP[0].brick[cB].x=7;
     }
-
 }
 
 void moveBrick(brcks *bP, int mv){
-    //wall colisions
+    //vertica colisions
     int i;
     int colR=0;
     int colL=0;
+    int cB = bP->curBr;
     for(i=0;i<4;i++){
-        float nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
-        float nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)+1;
+        float nY=(bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
+        float nX=(bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x)+1;
         if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
             colR++;
 
-        nY=(bP[0].brick[0].y + bP[0].brick[0].stn[i].y);
-        nX=(bP[0].brick[0].x + bP[0].brick[0].stn[i].x)-1;
+        nY=(bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
+        nX=(bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x)-1;
         if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
             colL++;
     }
@@ -143,17 +148,17 @@ void moveBrick(brcks *bP, int mv){
     if(mv == KEY_UP){
         //rotate
         int i;
-        switch(bP[0].brick[0].id){
+        switch(bP[0].brick[cB].id){
             case 0:
-                if(bP[0].brick[0].stn[1].x != 0){
+                if(bP[0].brick[cB].stn[1].x != 0){
                     for(i=0;i<4;i++){
-                        bP[0].brick[0].stn[i].x-=i;
-                        bP[0].brick[0].stn[i].y+=i;
+                        bP[0].brick[cB].stn[i].x-=i;
+                        bP[0].brick[cB].stn[i].y+=i;
                     }
                 }else{
                     for(i=0;i<4;i++){
-                        bP[0].brick[0].stn[i].x+=i;
-                        bP[0].brick[0].stn[i].y-=i;
+                        bP[0].brick[cB].stn[i].x+=i;
+                        bP[0].brick[cB].stn[i].y-=i;
                     }
                 }
                 break;
@@ -162,38 +167,38 @@ void moveBrick(brcks *bP, int mv){
             break;
         case 2:
             //turn ccw A->B
-            if(bP[0].brick[0].stn[0].x == 0 && bP[0].brick[0].stn[0].y == 0){
-                bP[0].brick[0].stn[0].y+=1;
-                bP[0].brick[0].stn[1].x-=1;
-                bP[0].brick[0].stn[2].y-=1;
-                bP[0].brick[0].stn[3].x+=1;
-                bP[0].brick[0].stn[3].y-=2;
+            if(bP[0].brick[cB].stn[0].x == 0 && bP[0].brick[cB].stn[0].y == 0){
+                bP[0].brick[cB].stn[0].y+=1;
+                bP[0].brick[cB].stn[1].x-=1;
+                bP[0].brick[cB].stn[2].y-=1;
+                bP[0].brick[cB].stn[3].x+=1;
+                bP[0].brick[cB].stn[3].y-=2;
                 mvprintw(23,3,"hmm: A-B");
-            }else if(bP[0].brick[0].stn[0].x == 0 && bP[0].brick[0].stn[0].y == 1){
+            }else if(bP[0].brick[cB].stn[0].x == 0 && bP[0].brick[cB].stn[0].y == 1){
                 //turn ccw B->C
-                bP[0].brick[0].stn[0].x+=1;
-                bP[0].brick[0].stn[0].y+=1;
-                bP[0].brick[0].stn[1].y+=2;
-                bP[0].brick[0].stn[2].x-=1;
-                bP[0].brick[0].stn[2].y+=1;
-                bP[0].brick[0].stn[3].x-=2;
+                bP[0].brick[cB].stn[0].x+=1;
+                bP[0].brick[cB].stn[0].y+=1;
+                bP[0].brick[cB].stn[1].y+=2;
+                bP[0].brick[cB].stn[2].x-=1;
+                bP[0].brick[cB].stn[2].y+=1;
+                bP[0].brick[cB].stn[3].x-=2;
                 mvprintw(23,3,"hmm: B-C");
-            }else if(bP[0].brick[0].stn[0].x == 1 && bP[0].brick[0].stn[0].y == 2){
+            }else if(bP[0].brick[cB].stn[0].x == 1 && bP[0].brick[cB].stn[0].y == 2){
                 //turn ccw C->D
-                bP[0].brick[0].stn[0].x+=1;
-                bP[0].brick[0].stn[0].y-=2;
-                bP[0].brick[0].stn[1].x+=2;
-                bP[0].brick[0].stn[1].y-=1;
-                bP[0].brick[0].stn[2].x+=1;
-                bP[0].brick[0].stn[3].y+=1;
+                bP[0].brick[cB].stn[0].x+=1;
+                bP[0].brick[cB].stn[0].y-=2;
+                bP[0].brick[cB].stn[1].x+=2;
+                bP[0].brick[cB].stn[1].y-=1;
+                bP[0].brick[cB].stn[2].x+=1;
+                bP[0].brick[cB].stn[3].y+=1;
                 mvprintw(23,3,"hmm: C-D");
-            }else if(bP[0].brick[0].stn[0].x == 2 && bP[0].brick[0].stn[0].y == 0){
+            }else if(bP[0].brick[cB].stn[0].x == 2 && bP[0].brick[cB].stn[0].y == 0){
                 //turn ccw D->A
-                bP[0].brick[0].stn[0].x-=2;
-                bP[0].brick[0].stn[1].x-=1;
-                bP[0].brick[0].stn[1].y-=1;
-                bP[0].brick[0].stn[3].x+=1;
-                bP[0].brick[0].stn[3].y+=1;
+                bP[0].brick[cB].stn[0].x-=2;
+                bP[0].brick[cB].stn[1].x-=1;
+                bP[0].brick[cB].stn[1].y-=1;
+                bP[0].brick[cB].stn[3].x+=1;
+                bP[0].brick[cB].stn[3].y+=1;
                 mvprintw(23,3,"hmm: D-A");
             }
             break;
@@ -202,11 +207,11 @@ void moveBrick(brcks *bP, int mv){
             break;
         }
     }else if(mv == KEY_DOWN){
-        bP[0].brick[0].y++;
+        bP[0].brick[cB].y++;
     }else if(mv == KEY_LEFT && colL == 0){
-        bP[0].brick[0].x--;
+        bP[0].brick[cB].x--;
     }else if(mv == KEY_RIGHT && colR == 0){
-        bP[0].brick[0].x++;
+        bP[0].brick[cB].x++;
     }else{
         
     }   
