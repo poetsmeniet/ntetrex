@@ -86,13 +86,13 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     //draw stage bottom
     int j;
     i = h;
-    for(j = (w + (w / 2));j >= 0;j -= 3){
+    for(j = (w + (w / 2)-2);j >= 0;j -= 3){
         mvprintw(((i - h) + 1), j, "---");
         mvprintw(i, j, "OOO");
         mvprintw(i+1, j, "OOO");
         refresh();
     }
-    mvprintw(((i - h) + 1), 0, "---");
+    //mvprintw(((i - h) + 1), 0, "");
     mvprintw(i, 0, "OOO");
     mvprintw(i+1, 0, "OOO");
 
@@ -100,7 +100,7 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     for(i = 0;i < h;i++){
         mvprintw(i, 0, "|X|");
         mvprintw(i, w, "|X|");
-        mvprintw(i, (w + (w / 2)), "|X|");
+        mvprintw(i, (w + (w / 2)), "|");
         usleep(delay);
         refresh();
     }
@@ -310,22 +310,22 @@ void detectLine(int width, int height, brcks *bP){
         if(i >=  width){
             if(cnt == 11){
                 //change chars
-                mvprintw(j, 0, "|X|____________|X|    |X|");
+                mvprintw(j, 0, "|X|____________|X|    |");
                 refresh();
                 usleep(DELAY1);
-                mvprintw(j, 0, "|X|xxxxxxxxxxxx|X|    |X|");
+                mvprintw(j, 0, "|X|xxxxxxxxxxxx|X|    |");
                 refresh();
                 usleep(DELAY1);
-                mvprintw(j, 0, "|X|XXXXXXXXXXXX|X|    |X|");
+                mvprintw(j, 0, "|X|XXXXXXXXXXXX|X|    |");
                 refresh();
                 usleep(DELAY1);
-                mvprintw(j, 0, "|X|XXXX    XXXX|X|    |X|");
+                mvprintw(j, 0, "|X|XXXX    XXXX|X|    |");
                 refresh();
                 usleep(DELAY1);
-                mvprintw(j, 0, "|X|XX        XX|X|    |X|");
+                mvprintw(j, 0, "|X|XX        XX|X|    |");
                 refresh();
                 usleep(DELAY1);
-                mvprintw(j, 0, "|X|X          X|X|    |X|");
+                mvprintw(j, 0, "|X|X          X|X|    |");
                 refresh();
                 usleep(DELAY1);
 
@@ -336,7 +336,7 @@ void detectLine(int width, int height, brcks *bP){
                 //add line at top
                 move(2, 0);
                 insertln();
-                mvprintw(2, 0, "|X|            |X|    |X|");
+                mvprintw(2, 0, "|X|            |X|    |");
 
                 //increase score
                 bP->score++;
