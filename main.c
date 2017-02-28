@@ -1,7 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <unistd.h>
-#define DELAY1 20000
+#define DELAY1 40000
 
 struct stone{
     float x;
@@ -309,11 +309,36 @@ void detectLine(int width, int height, brcks *bP){
 
         if(i >=  width){
             if(cnt == 11){
+                //change chars
+                mvprintw(j, 0, "|X|____________|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+                mvprintw(j, 0, "|X|xxxxxxxxxxxx|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+                mvprintw(j, 0, "|X|XXXXXXXXXXXX|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+                mvprintw(j, 0, "|X|XXXX    XXXX|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+                mvprintw(j, 0, "|X|XX        XX|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+                mvprintw(j, 0, "|X|X          X|X|    |X|");
+                refresh();
+                usleep(DELAY1);
+
+                //delete line
                 move(j, 0);
                 deleteln();
+
+                //add line at top
                 move(2, 0);
                 insertln();
                 mvprintw(2, 0, "|X|            |X|    |X|");
+
+                //increase score
                 bP->score++;
             }
             i = 3;
