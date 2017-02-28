@@ -254,7 +254,6 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[cB].stn[2].y -= 1;
                 bP[0].brick[cB].stn[3].x += 1;
                 bP[0].brick[cB].stn[3].y -= 2;
-                mvprintw(23,3,"hmm: A-B");
             }else if(bP[0].brick[cB].stn[0].x == 0 && bP[0].brick[cB].stn[0].y == 1){
                 //turn ccw B->C
                 bP[0].brick[cB].stn[0].x += 1;
@@ -263,7 +262,6 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[cB].stn[2].x -= 1;
                 bP[0].brick[cB].stn[2].y += 1;
                 bP[0].brick[cB].stn[3].x -= 2;
-                mvprintw(23,3,"hmm: B-C");
             }else if(bP[0].brick[cB].stn[0].x == 1 && bP[0].brick[cB].stn[0].y == 2){
                 //turn ccw C->D
                 bP[0].brick[cB].stn[0].x += 1;
@@ -272,7 +270,6 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[cB].stn[1].y -= 1;
                 bP[0].brick[cB].stn[2].x += 1;
                 bP[0].brick[cB].stn[3].y += 1;
-                mvprintw(23,3,"hmm: C-D");
             }else if(bP[0].brick[cB].stn[0].x == 2 && bP[0].brick[cB].stn[0].y == 0){
                 //turn ccw D->A
                 bP[0].brick[cB].stn[0].x -= 2;
@@ -280,7 +277,6 @@ void moveBrick(brcks *bP, int mv){
                 bP[0].brick[cB].stn[1].y -= 1;
                 bP[0].brick[cB].stn[3].x += 1;
                 bP[0].brick[cB].stn[3].y += 1;
-                mvprintw(23,3,"hmm: D-A");
             }
             break;
         default:
