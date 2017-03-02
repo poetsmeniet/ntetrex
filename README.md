@@ -3,6 +3,10 @@ Ncurses tetris
 
 Todo:
 
+- write brick generator
+- write generic rotater
+
+Done
 !- make use of ws consistent
 !- move functions for readability
 
