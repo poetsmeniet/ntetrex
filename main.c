@@ -108,18 +108,32 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].stn[3].y = 1;
 
         //determine "random" x for stone index 1
-        //int r = rand() % 1;
-
-        //switch(r){
-        //    case 0
-        //    br1.stn[3].x=nX;
-        //    br1.stn[3].y=nY;
-        //}
-        //test change brick 
-        //bP[0].brick[cB].stn[3].y -= 2;
-        bP[0].brick[cB].stn[2].x += 2;
-
-
+        int r = rand() % 3;
+        //int r=4;
+        switch(r){
+            case 0:
+                  bP[0].brick[cB].stn[3].y -= 2;
+                  break;
+            case 1:
+                  bP[0].brick[cB].stn[1].x -= 1;
+                  bP[0].brick[cB].stn[1].y += 2;
+                  bP[0].brick[cB].stn[3].x -= 1;
+                  bP[0].brick[cB].stn[3].y += 2;
+                  break;
+            case 2:
+                bP[0].brick[cB].stn[2].x += 2;
+                break;
+            case 3:
+                bP[0].brick[cB].stn[3].x -= 1;
+                bP[0].brick[cB].stn[3].y += 1;
+                break;
+            case 4:
+                bP[0].brick[cB].stn[1].x -= 1;
+                bP[0].brick[cB].stn[1].y += 2;
+                break;
+            default:
+                break;
+        }
     }
 
     if(bP[0].brick[cB].x > 22){
