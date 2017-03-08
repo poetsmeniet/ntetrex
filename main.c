@@ -75,11 +75,13 @@ void gravBrick(brcks *bP){
     int col = 0;
     int cB = bP->curBr;
     for(i = 0;i < 4;i++){
-        float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y) + 1;
-        float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x);
+
+
+        float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
+        float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
         if(mvinch(nY,nX) == 'O' && \
-                nY !=  (bP[0].brick[cB].y + bP[0].brick[cB].stn[i+1].y) && \
-                nY !=  (bP[0].brick[cB].y + bP[0].brick[cB].stn[i-1].y) \
+                    nY != bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i+1].y && \
+                    nX != bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i-1].x \
                 )
             col++;
     }
