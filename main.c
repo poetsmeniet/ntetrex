@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 #define DELAY1 40000
 
 struct stone{
@@ -70,18 +71,23 @@ void printBrick(brcks *bP){
 }
 
 void gravBrick(brcks *bP){
-    //detect colision with floor & other bricks
     int i;
     int col = 0;
     int cB = bP->curBr;
+    //get highest y 
+
+    int hY = 0;
     for(i = 0;i < 4;i++){
+        if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hY)
+            hY = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
+    }
+    mvprintw(10,10,"highest y: %d",hY);
 
-
+    for(i = 0;i < 4;i++){
         float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
         float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
         if(mvinch(nY,nX) == 'O' && \
-                    nY != bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i+1].y && \
-                    nX != bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i-1].x \
+                    bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y == hY \
                 )
             col++;
     }
@@ -96,20 +102,14 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
-        //bP->curBr = rand() % 3;
-        bP[0].brick[cB].y = 2;
-        bP[0].brick[cB].x = 7;
 
-        bP[0].brick[cB].stn[1].x = 1;
-        bP[0].brick[cB].stn[1].y = 0;
-        bP[0].brick[cB].stn[2].x = 0;
-        bP[0].brick[cB].stn[2].y = 1;
-        bP[0].brick[cB].stn[3].x = 1;
-        bP[0].brick[cB].stn[3].y = 1;
+        initBricks(bP);
 
         //determine "random" x for stone index 1
-        int r = rand() % 3;
-        //int r=4;
+        time_t t;
+        srand((unsigned) time(&t));
+        //int r = rand() % 2;
+        int r=1;
         switch(r){
             case 0:
                   bP[0].brick[cB].stn[3].y -= 2;
