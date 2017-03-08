@@ -71,7 +71,7 @@ void printBrick(brcks *bP){
 }
 
 void gravBrick(brcks *bP){
-    int i;
+    int i, j;
     int col = 0;
     int cB = bP->curBr;
     //get highest y 
@@ -85,11 +85,21 @@ void gravBrick(brcks *bP){
 
     for(i = 0;i < 4;i++){
         float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
-        float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
-        if(mvinch(nY,nX) == 'O' && \
+        float cX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
+        // is lowest stone (hY?) then collide if O
+        if(mvinch(nY, cX) == 'O' && \
                     bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y == hY \
                 )
             col++;
+
+        //if stone is not highest Y, but next Y on current X is not a stone.. col++
+        // loop through stones and compare x,y with cX,nY
+        //if(bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y < hY){
+        //    for(j = 0;j < 4;j++){
+        //        if(nY != bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y && mvinch(nY, cX) == 'O' && cX == )
+        //            col++;
+        //    }
+        //}
     }
     //move brick
     if(col == 0){
@@ -102,24 +112,23 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
-
         initBricks(bP);
 
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        //int r = rand() % 2;
-        int r=1;
+        //int r = rand() % 3;
+        int r=0;
         switch(r){
             case 0:
-                  bP[0].brick[cB].stn[3].y -= 2;
-                  break;
+                bP[0].brick[cB].stn[2].y -= 2;
+                break;
             case 1:
-                  bP[0].brick[cB].stn[1].x -= 1;
-                  bP[0].brick[cB].stn[1].y += 2;
-                  bP[0].brick[cB].stn[3].x -= 1;
-                  bP[0].brick[cB].stn[3].y += 2;
-                  break;
+                bP[0].brick[cB].stn[1].x -= 1;
+                bP[0].brick[cB].stn[1].y += 2;
+                bP[0].brick[cB].stn[3].x -= 1;
+                bP[0].brick[cB].stn[3].y += 2;
+                break;
             case 2:
                 bP[0].brick[cB].stn[2].x += 2;
                 break;
@@ -164,12 +173,12 @@ void moveBrick(brcks *bP, int mv){
     for(i = 0;i < 4;i++){
         float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
         float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) + 1;
-        if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
+        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colR++;
 
         nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
         nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) - 1;
-        if(mvinch(nY,nX) == '|' || mvinch(nY,nX) == 'O')
+        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colL++;
     }
 
