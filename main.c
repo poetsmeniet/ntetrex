@@ -56,11 +56,14 @@ int main(void){
 }
 
 void printBrick(brcks *bP){
-    int i;
+    int i=1;
     int cB = bP->curBr;
+
+    //print brick, stone coords are relative to each other
+    int x, y;
     for(i = 0;i < 4;i++){
-        int y = bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y;
-        int x = bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x;
+        y = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
+        x = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x;
         mvprintw(y, x, "%c", bP[0].brick[cB].body);
     }
     refresh();
@@ -91,9 +94,30 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
-        bP->curBr = rand() % 3;
+        //bP->curBr = rand() % 3;
         bP[0].brick[cB].y = 2;
         bP[0].brick[cB].x = 7;
+
+        bP[0].brick[cB].stn[1].x = 1;
+        bP[0].brick[cB].stn[1].y = 0;
+        bP[0].brick[cB].stn[2].x = 0;
+        bP[0].brick[cB].stn[2].y = 1;
+        bP[0].brick[cB].stn[3].x = 1;
+        bP[0].brick[cB].stn[3].y = 1;
+
+        //determine "random" x for stone index 1
+        //int r = rand() % 1;
+
+        //switch(r){
+        //    case 0
+        //    br1.stn[3].x=nX;
+        //    br1.stn[3].y=nY;
+        //}
+        //test change brick 
+        //bP[0].brick[cB].stn[3].y -= 2;
+        bP[0].brick[cB].stn[2].x += 2;
+
+
     }
 
     if(bP[0].brick[cB].x > 22){
@@ -310,48 +334,16 @@ void initBricks(brcks *bP){
         .stn[0].y = 0,
         .stn[1].x = 1,
         .stn[1].y = 0,
-        .stn[2].x = 2,
-        .stn[2].y = 0,
-        .stn[3].x = 3,
-        .stn[3].y = 0,
-    };
-
-    brick br2 = {
-        .id = 1,
-        .body = 'O',
-        .x = sX,
-        .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 0,
-        .stn[1].y = 1,
-        .stn[2].x = 1,
-        .stn[2].y = 0,
-        .stn[3].x = 1,
-        .stn[3].y = 1,
-    };
-
-    brick br3 = {
-        .id = 2,
-        .body = 'O',
-        .x = sX,
-        .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 1,
-        .stn[1].y = 0,
-        .stn[2].x = 1,
+        .stn[2].x = 0,
         .stn[2].y = 1,
         .stn[3].x = 1,
-        .stn[3].y = 2,
+        .stn[3].y = 1,
     };
 
     brcks brcks = {
         .curBr = 0,
         .score = 0,
         .brick[0] = br1,
-        .brick[1] = br2,
-        .brick[2] = br3
     };
 
     *bP = brcks;
