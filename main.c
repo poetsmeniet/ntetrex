@@ -112,9 +112,14 @@ void gravBrick(brcks *bP){
         cnt=nY;
         mvprintw(cnt-2, 25, ".                            ", ignore, tjek);
         mvprintw(cnt-1, 25, ".                            ", ignore, tjek);
-        mvprintw(cnt, 25, "cnt: %d, ignore: %d, tjek: %d",cnt , ignore, tjek);
-        if(tjek == 0)
+        mvprintw(cnt, 25, "cnt: %d, ignore: %d, tjek: %d :: (%d)",cnt , ignore, tjek, (ignore - tjek));
+
+        if((ignore - tjek) > 0)
             col++;
+
+        //if(tjek == 0)
+        //    col++;
+
     //move brick
     if(col == 0){
         int i;
@@ -132,7 +137,7 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         //int r = rand() % 3;
-        int r=1;
+        int r=0;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
