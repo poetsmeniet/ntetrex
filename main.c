@@ -106,7 +106,7 @@ void gravBrick(brcks *bP){
     }
     cnt=nY;
 
-    if(tjek != bP->tjek && cnt > 5)
+    if(tjek != bP->tjek && cnt > 7)
         col++;
 
     bP->tjek = tjek;
@@ -127,8 +127,8 @@ void gravBrick(brcks *bP){
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        //int r = rand() % 3;
-        int r=4;
+        int r = rand() % 3;
+        //int r=5;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -149,6 +149,8 @@ void gravBrick(brcks *bP){
             case 4:
                 bP[0].brick[cB].stn[1].x -= 1;
                 bP[0].brick[cB].stn[1].y += 2;
+                break;
+            case 5:
                 break;
             default:
                 break;
