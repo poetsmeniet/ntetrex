@@ -20,6 +20,7 @@ typedef struct brick{
 
 typedef struct bricks{
     int curBr;
+    int tjek;
     int score;
     struct brick brick[4];
 }brcks;
@@ -82,10 +83,8 @@ void gravBrick(brcks *bP){
         if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
             hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
     }
-    //mvprintw(10,10,"highest y: %d",hYo);
     
     int cnt;
-    int ignore=0;
     int tjek=0;
     int nY;
     int cX;
@@ -100,25 +99,17 @@ void gravBrick(brcks *bP){
             stoneY = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y;
             stoneX = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[j].x;
             
-            //detect stone in brick and ignore
-            if(nY == stoneY && cX == stoneX && mvinch(nY, cX) == 'O')
-                ignore++;
-
             //detect collision
             if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
                 tjek++;
         }
     }
-        cnt=nY;
-        mvprintw(cnt-2, 25, ".                            ", ignore, tjek);
-        mvprintw(cnt-1, 25, ".                            ", ignore, tjek);
-        mvprintw(cnt, 25, "cnt: %d, ignore: %d, tjek: %d :: (%d)",cnt , ignore, tjek, (ignore - tjek));
+    cnt=nY;
 
-        if((ignore - tjek) > 0)
-            col++;
+    if(tjek != bP->tjek && cnt > 5)
+        col++;
 
-        //if(tjek == 0)
-        //    col++;
+    bP->tjek = tjek;
 
     //move brick
     if(col == 0){
@@ -137,7 +128,7 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         //int r = rand() % 3;
-        int r=0;
+        int r=4;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -386,6 +377,7 @@ void initBricks(brcks *bP){
 
     brcks brcks = {
         .curBr = 0,
+        .tjek = 0,
         .score = 0,
         .brick[0] = br1,
     };
