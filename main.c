@@ -49,6 +49,7 @@ int main(void){
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
         usleep(30000);
+        //usleep(300000);
     }
 
     endwin();
@@ -76,31 +77,44 @@ void gravBrick(brcks *bP){
     int cB = bP->curBr;
     //get highest y 
 
-    int hY = 0;
+    int hYo = 0;
     for(i = 0;i < 4;i++){
-        if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hY)
-            hY = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
+        if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
+            hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
     }
-    mvprintw(10,10,"highest y: %d",hY);
-
+    //mvprintw(10,10,"highest y: %d",hYo);
+    
+    int cnt;
+    int ignore=0;
+    int tjek=0;
+    int nY;
+    int cX;
     for(i = 0;i < 4;i++){
-        float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
-        float cX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
-        // is lowest stone (hY?) then collide if O
-        if(mvinch(nY, cX) == 'O' && \
-                    bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y == hY \
-                )
+        nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
+        cX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
+
+        int stoneY;
+        int stoneX;
+
+        for(j = 0;j < 4;j++){
+            stoneY = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y;
+            stoneX = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[j].x;
+            
+            //detect stone in brick and ignore
+            if(nY == stoneY && cX == stoneX && mvinch(nY, cX) == 'O')
+                ignore++;
+
+            //detect collision
+            if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
+                tjek++;
+        }
+    }
+        cnt=nY;
+        mvprintw(cnt-2, 25, ".                            ", ignore, tjek);
+        mvprintw(cnt-1, 25, ".                            ", ignore, tjek);
+        mvprintw(cnt, 25, "cnt: %d, ignore: %d, tjek: %d",cnt , ignore, tjek);
+        if(tjek == 0)
             col++;
-
-        //if stone is not highest Y, but next Y on current X is not a stone.. col++
-        // loop through stones and compare x,y with cX,nY
-        //if(bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y < hY){
-        //    for(j = 0;j < 4;j++){
-        //        if(nY != bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y && mvinch(nY, cX) == 'O' && cX == )
-        //            col++;
-        //    }
-        //}
-    }
     //move brick
     if(col == 0){
         int i;
@@ -118,7 +132,7 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         //int r = rand() % 3;
-        int r=0;
+        int r=1;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
