@@ -128,7 +128,7 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         int r = rand() % 3;
-        //int r=5;
+        //int r=3;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -197,53 +197,10 @@ void moveBrick(brcks *bP, int mv){
     //movement
     if(mv == KEY_UP){
         //rotate
-        int i;
         switch(bP[0].brick[cB].id){
             case 0:
-                if(bP[0].brick[cB].stn[1].x !=  0){
-                    for(i = 0;i < 4;i++){
-                        bP[0].brick[cB].stn[i].x -=  i;
-                        bP[0].brick[cB].stn[i].y +=  i;
-                    }
-                }else{
-                    for(i = 0;i < 4;i++){
-                        bP[0].brick[cB].stn[i].x +=  i;
-                        bP[0].brick[cB].stn[i].y -=  i;
-                    }
-                }
                 break;
         case 2:
-            //turn ccw A->B
-            if(bP[0].brick[cB].stn[0].x == 0 && bP[0].brick[cB].stn[0].y == 0){
-                bP[0].brick[cB].stn[0].y += 1;
-                bP[0].brick[cB].stn[1].x -= 1;
-                bP[0].brick[cB].stn[2].y -= 1;
-                bP[0].brick[cB].stn[3].x += 1;
-                bP[0].brick[cB].stn[3].y -= 2;
-            }else if(bP[0].brick[cB].stn[0].x == 0 && bP[0].brick[cB].stn[0].y == 1){
-                //turn ccw B->C
-                bP[0].brick[cB].stn[0].x += 1;
-                bP[0].brick[cB].stn[0].y += 1;
-                bP[0].brick[cB].stn[1].y += 2;
-                bP[0].brick[cB].stn[2].x -= 1;
-                bP[0].brick[cB].stn[2].y += 1;
-                bP[0].brick[cB].stn[3].x -= 2;
-            }else if(bP[0].brick[cB].stn[0].x == 1 && bP[0].brick[cB].stn[0].y == 2){
-                //turn ccw C->D
-                bP[0].brick[cB].stn[0].x += 1;
-                bP[0].brick[cB].stn[0].y -= 2;
-                bP[0].brick[cB].stn[1].x += 2;
-                bP[0].brick[cB].stn[1].y -= 1;
-                bP[0].brick[cB].stn[2].x += 1;
-                bP[0].brick[cB].stn[3].y += 1;
-            }else if(bP[0].brick[cB].stn[0].x == 2 && bP[0].brick[cB].stn[0].y == 0){
-                //turn ccw D->A
-                bP[0].brick[cB].stn[0].x -= 2;
-                bP[0].brick[cB].stn[1].x -= 1;
-                bP[0].brick[cB].stn[1].y -= 1;
-                bP[0].brick[cB].stn[3].x += 1;
-                bP[0].brick[cB].stn[3].y += 1;
-            }
             break;
         default:
             break;
