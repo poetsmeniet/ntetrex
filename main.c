@@ -20,7 +20,7 @@ typedef struct brick{
 
 typedef struct bricks{
     int curBr;
-    int tjek;
+    float tjek;
     int score;
     struct brick brick[4];
 }brcks;
@@ -86,28 +86,28 @@ void gravBrick(brcks *bP){
     }
     
     int cnt;
-    int tjek=0;
-    int nY;
-    int cX;
+    float tjek=0;
+    float nY;
+    float cX;
     for(i = 0;i < 4;i++){
         nY = (bP[0].brick[cB].stn[i].y) + 1;
         cX = (bP[0].brick[cB].stn[i].x);
 
-        int stoneY;
-        int stoneX;
+        float stoneY;
+        float stoneX;
 
         for(j = 0;j < 4;j++){
             stoneY = bP[0].brick[cB].stn[j].y;
             stoneX = bP[0].brick[cB].stn[j].x;
             
             //detect collision
-            if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
-                tjek++;
+            if(nY == stoneY + 1 && cX == stoneX && mvinch(nY, cX) != 'O')
+                tjek += 1;
         }
     }
     cnt=nY;
 
-    if(tjek != bP->tjek && cnt > 7)
+    if(tjek != bP->tjek && cnt > 8)
         col++;
 
     bP->tjek = tjek;
