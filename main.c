@@ -62,13 +62,14 @@ void printBrick(brcks *bP){
     int i=1;
     int cB = bP->curBr;
 
-    //print brick, stone coords are relative to each other
+    //print bricks' stones
     int x, y;
     for(i = 0;i < 4;i++){
-        y = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
-        x = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x;
+        y = bP[0].brick[cB].stn[i].y;
+        x = bP[0].brick[cB].stn[i].x;
         mvprintw(y, x, "%c", bP[0].brick[cB].body);
     }
+    mvprintw(3, 25, "%f | %f", bP[0].brick[cB].y, y);
     refresh();
 }
 
@@ -80,8 +81,8 @@ void gravBrick(brcks *bP){
 
     int hYo = 0;
     for(i = 0;i < 4;i++){
-        if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
-            hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
+        if( bP[0].brick[cB].stn[i].y > hYo)
+            hYo = bP[0].brick[cB].stn[i].y;
     }
     
     int cnt;
@@ -89,15 +90,15 @@ void gravBrick(brcks *bP){
     int nY;
     int cX;
     for(i = 0;i < 4;i++){
-        nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
-        cX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
+        nY = (bP[0].brick[cB].stn[i].y) + 1;
+        cX = (bP[0].brick[cB].stn[i].x);
 
         int stoneY;
         int stoneX;
 
         for(j = 0;j < 4;j++){
-            stoneY = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y;
-            stoneX = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[j].x;
+            stoneY = bP[0].brick[cB].stn[j].y;
+            stoneX = bP[0].brick[cB].stn[j].x;
             
             //detect collision
             if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
@@ -115,10 +116,14 @@ void gravBrick(brcks *bP){
     if(col == 0){
         int i;
         for(i = 0;i < 4;i++){
-            int y = bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y;
-            int x = bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x;
+            int y = bP[0].brick[cB].stn[i].y;
+            int x = bP[0].brick[cB].stn[i].x;
             mvprintw(y, x, " ");
+
+            //increment stones pos
+            bP[0].brick[cB].stn[i].y += 0.05;
         }
+        //deprecate:
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
@@ -183,13 +188,13 @@ void moveBrick(brcks *bP, int mv){
     int colL = 0;
     int cB = bP->curBr;
     for(i = 0;i < 4;i++){
-        float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
-        float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) + 1;
+        float nY = (bP[0].brick[cB].stn[i].y);
+        float nX = (bP[0].brick[cB].stn[i].x) + 1;
         if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colR++;
 
-        nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
-        nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) - 1;
+        //nY = (bP[0].brick[cB].stn[i].y);
+        nX = (bP[0].brick[cB].stn[i].x) - 1;
         if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colL++;
     }
@@ -207,10 +212,19 @@ void moveBrick(brcks *bP, int mv){
         }
     }else if(mv == KEY_DOWN){
         bP[0].brick[cB].y++;
+        for(i = 0;i < 4;i++){
+            bP[0].brick[cB].stn[i].y++;
+        }
     }else if(mv == KEY_LEFT && colL == 0){
         bP[0].brick[cB].x--;
+        for(i = 0;i < 4;i++){
+            bP[0].brick[cB].stn[i].x--;
+        }
     }else if(mv == KEY_RIGHT && colR == 0){
         bP[0].brick[cB].x++;
+        for(i = 0;i < 4;i++){
+            bP[0].brick[cB].stn[i].x++;
+        }
     }else{
         
     }   
@@ -324,14 +338,14 @@ void initBricks(brcks *bP){
         .body = 'O',
         .x = sX,
         .y = sY,
-        .stn[0].x = 0,
-        .stn[0].y = 0,
-        .stn[1].x = 1,
-        .stn[1].y = 0,
-        .stn[2].x = 0,
-        .stn[2].y = 1,
-        .stn[3].x = 1,
-        .stn[3].y = 1,
+        .stn[0].x = sX,
+        .stn[0].y = sY,
+        .stn[1].x = sX + 1,
+        .stn[1].y = sY,
+        .stn[2].x = sX,
+        .stn[2].y = sY + 1,
+        .stn[3].x = sX + 1,
+        .stn[3].y = sY + 1,
     };
 
     brcks brcks = {
