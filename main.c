@@ -132,7 +132,7 @@ void gravBrick(brcks *bP){
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        int r = rand() % 3;
+        int r = rand() % 4;
         //int r=3;
         switch(r){
             case 0:
