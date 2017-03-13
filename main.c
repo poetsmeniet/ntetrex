@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #define DELAY1 40000
 
 struct stone{
@@ -69,7 +70,7 @@ void printBrick(brcks *bP){
         x = bP[0].brick[cB].stn[i].x;
         mvprintw(y, x, "%c", bP[0].brick[cB].body);
     }
-    mvprintw(3, 25, "%f | %f", bP[0].brick[cB].y, y);
+    mvprintw(3, 25, "%f @@ %f", bP[0].brick[cB].y, bP[0].brick[cB].stn[3].y);
     refresh();
 }
 
@@ -108,9 +109,13 @@ void gravBrick(brcks *bP){
     cnt=nY;
 
     if(tjek != bP->tjek && cnt > 8)
-        col++;
+        //col++;
 
     bP->tjek = tjek;
+
+    //testing
+    if(cnt >=20)
+        col++;
 
     //move brick
     if(col == 0){
@@ -202,13 +207,25 @@ void moveBrick(brcks *bP, int mv){
     //movement
     if(mv == KEY_UP){
         //rotate
-        switch(bP[0].brick[cB].id){
-            case 0:
-                break;
-        case 2:
-            break;
-        default:
-            break;
+        int j;
+        float newX;
+        float newY;
+        float angle=90.00;
+        for(j = 0;j < 4;j++){
+            //apply rotation matrix
+            // x = x cos angle - y sin angle
+            // y = x sin angle + y cos angle
+            //newX = (bP[0].brick[cB].stn[j].x * cos(angle)) - (bP[0].brick[cB].stn[j].y * sin(angle));
+            //newY = (bP[0].brick[cB].stn[j].x * sin(angle)) + (bP[0].brick[cB].stn[j].y * cos(angle));
+            //
+            newX = (bP[0].brick[cB].stn[j].x * cos(angle)) - (bP[0].brick[cB].stn[j].y * sin(angle)) + bP[0].brick[cB].stn[j].x;
+            newY = (bP[0].brick[cB].stn[j].x * sin(angle)) + (bP[0].brick[cB].stn[j].y * cos(angle)) - bP[0].brick[cB].stn[j].y;
+        
+            mvprintw(5, 25, "current x: %f newX: %f cos(angle): %f, sin(angle): %f", bP[0].brick[cB].stn[3].x, newX, cos(angle), sin(angle));
+            mvprintw(6, 25, "current y: %f newY: %f cos(angle): %f, sin(angle): %f", bP[0].brick[cB].stn[3].y, newY, cos(angle), sin(angle));
+
+            bP[0].brick[cB].stn[j].x -= newX;
+            bP[0].brick[cB].stn[j].y += newY;
         }
     }else if(mv == KEY_DOWN){
         bP[0].brick[cB].y++;
