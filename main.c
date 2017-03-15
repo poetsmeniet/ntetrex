@@ -83,6 +83,7 @@ void gravBrick(brcks *bP){
         if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
             hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
     }
+    mvprintw(5, 25, "hYo: %i", hYo);
     
     int cnt;
     int tjek=0;
@@ -130,8 +131,8 @@ void gravBrick(brcks *bP){
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        //int r = rand() % 5;
-        int r=3;
+        int r = rand() % 5;
+        //int r=3;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -146,6 +147,9 @@ void gravBrick(brcks *bP){
                 bP[0].brick[cB].stn[2].x += 2;
                 break;
             case 3:
+                //bP[0].brick[cB].stn[3].x -= 1;
+                //bP[0].brick[cB].stn[3].y += 1;
+
                 bP[0].brick[cB].stn[1].x = -1;
                 bP[0].brick[cB].stn[1].y = 0;
                 bP[0].brick[cB].stn[2].x = -1;
@@ -204,21 +208,12 @@ void moveBrick(brcks *bP, int mv){
     //movement
     if(mv == KEY_UP){
         //rotate
-        // nx = cx - F
-        // ny = cy - F
-        // where F = sum(x, y) where x, y relative to first stone.
-        
-        for(i = 0;i < 4;i++){
+        for(i = 1;i < 4;i++){
+            
             float cX = bP[0].brick[cB].stn[i].x;
             float cY = bP[0].brick[cB].stn[i].y;
-            int F = cX + cY;
-            
-            float newX = (cX - F);
-            float newY = (cY - F);
-            bP[0].brick[cB].stn[i].x = newX;
-            bP[0].brick[cB].stn[i].y = newY;
-
-            mvprintw(5+i, 25, "F: %d, cX/cY: %f/%f - newX/Y: %f/%f", F, cX, cY, newX, newY);
+            bP[0].brick[cB].stn[i].x = cY;
+            bP[0].brick[cB].stn[i].y = (cX * -1);
         }
 
 
