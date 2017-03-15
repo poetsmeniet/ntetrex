@@ -70,7 +70,7 @@ void printBrick(brcks *bP){
         x = bP[0].brick[cB].stn[i].x;
         mvprintw(y, x, "%c", bP[0].brick[cB].body);
     }
-    mvprintw(3, 25, "%f @@ %f", bP[0].brick[cB].y, bP[0].brick[cB].stn[3].y);
+    mvprintw(3, 25, "%f @@ %f", bP[0].brick[cB].stn[0].x, bP[0].brick[cB].stn[0].y);
     refresh();
 }
 
@@ -114,8 +114,8 @@ void gravBrick(brcks *bP){
     bP->tjek = tjek;
 
     //testing
-    if(cnt >=20)
-        col++;
+    //if(cnt >=20)
+        //col++;
 
     //move brick
     if(col == 0){
@@ -132,13 +132,14 @@ void gravBrick(brcks *bP){
         bP[0].brick[cB].y += 0.05;
     }else{
         //respawn
+        mvprintw(2,25,"respawned @ %i",time(NULL));
         initBricks(bP);
 
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        int r = rand() % 4;
-        //int r=3;
+        int r = rand() % 5;
+        //int r=5;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -167,16 +168,16 @@ void gravBrick(brcks *bP){
         }
     }
 
-    if(bP[0].brick[cB].x > 22){
-        mvprintw((bP[0].brick[cB].y + 1), bP[0].brick[cB].x, "I'm FREE!");
-        refresh();
-        sleep(1);
-    	drawStage(15, 20, 1, bP);
-        bP->score += 4;
-        bP->curBr = rand() % 3;
-        bP[0].brick[cB].y = 2;
-        bP[0].brick[cB].x = 7;
-    }
+    //if(bP[0].brick[cB].x > 22){
+    //    mvprintw((bP[0].brick[cB].y + 1), bP[0].brick[cB].x, "I'm FREE!");
+    //    refresh();
+    //    sleep(3);
+    //	drawStage(15, 20, 1, bP);
+    //    bP->score += 4;
+    //    bP->curBr = rand() % 3;
+    //    bP[0].brick[cB].y = 2;
+    //    bP[0].brick[cB].x = 7;
+    //}
 }
 
 void drawLabels(int w, int h, brcks *bP){
@@ -210,22 +211,29 @@ void moveBrick(brcks *bP, int mv){
         int j;
         float newX;
         float newY;
-        float angle=90.00;
+        float angle=-90.00;
         for(j = 0;j < 4;j++){
             //apply rotation matrix
             // x = x cos angle - y sin angle
             // y = x sin angle + y cos angle
+        
             //newX = (bP[0].brick[cB].stn[j].x * cos(angle)) - (bP[0].brick[cB].stn[j].y * sin(angle));
             //newY = (bP[0].brick[cB].stn[j].x * sin(angle)) + (bP[0].brick[cB].stn[j].y * cos(angle));
-            //
-            newX = (bP[0].brick[cB].stn[j].x * cos(angle)) - (bP[0].brick[cB].stn[j].y * sin(angle)) + bP[0].brick[cB].stn[j].x;
-            newY = (bP[0].brick[cB].stn[j].x * sin(angle)) + (bP[0].brick[cB].stn[j].y * cos(angle)) - bP[0].brick[cB].stn[j].y;
-        
-            mvprintw(5, 25, "current x: %f newX: %f cos(angle): %f, sin(angle): %f", bP[0].brick[cB].stn[3].x, newX, cos(angle), sin(angle));
-            mvprintw(6, 25, "current y: %f newY: %f cos(angle): %f, sin(angle): %f", bP[0].brick[cB].stn[3].y, newY, cos(angle), sin(angle));
+            //mvprintw(6+j, 25, "[%d] current x: %f newX: %f, current y: %f newY: %f", j, bP[0].brick[cB].stn[3].x, newX, bP[0].brick[cB].stn[3].y, newY);
 
-            bP[0].brick[cB].stn[j].x -= newX;
-            bP[0].brick[cB].stn[j].y += newY;
+            //bP[0].brick[cB].stn[j].x = newX;
+            //bP[0].brick[cB].stn[j].y = newY;
+
+            //# new_x = (0)(old_x)+(-1)(old_y)
+            //# new_y = (1)(old_x)+(0)(old_y)
+
+            newX = (0 * bP[0].brick[cB].stn[j].x + (-1 * bP[0].brick[cB].stn[j].y));
+            newY = (1 * bP[0].brick[cB].stn[j].x) + (0 * bP[0].brick[cB].stn[j].y);
+
+            mvprintw(6+j, 25, "[%d] current x, y: %f, %f, new x, y: %f, %f", j, bP[0].brick[cB].stn[j].x, bP[0].brick[cB].stn[j].y, newX, newY);
+
+            bP[0].brick[cB].stn[j].x = newX;
+            bP[0].brick[cB].stn[j].y = newY;
         }
     }else if(mv == KEY_DOWN){
         bP[0].brick[cB].y++;
@@ -349,6 +357,8 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
 void initBricks(brcks *bP){
     float sX = 7.0;
     float sY = 2.0;
+    //float sX = 25.0;
+    //float sY = 20.0;
 
     brick br1 = {
         .id = 0,

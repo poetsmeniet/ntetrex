@@ -1,4 +1,4 @@
 # Makefile
-LDFLAGS= -Wall -lncurses
+LDFLAGS= -Wall -lncurses -lm
 
 all: main
