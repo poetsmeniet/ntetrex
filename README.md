@@ -5,4 +5,6 @@ Todo:
 
 !- write brick generator
 !- generic collision detection
-- write generic rotater
+! write generic rotater
+!- rotate around second stone
+- fix rotate wall colision
