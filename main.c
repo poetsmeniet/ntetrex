@@ -49,8 +49,8 @@ int main(void){
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
-        usleep(30000);
-        //usleep(300000);
+        //usleep(30000);
+        usleep(300000);
     }
 
     endwin();
@@ -107,6 +107,9 @@ void gravBrick(brcks *bP){
     cnt=nY;
 
     if(tjek != bP->tjek && cnt > 7)
+        //col++;
+
+    if(cnt >= 20)
         col++;
 
     bP->tjek = tjek;
@@ -127,8 +130,8 @@ void gravBrick(brcks *bP){
         //determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
-        int r = rand() % 3;
-        //int r=3;
+        //int r = rand() % 5;
+        int r=3;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -197,10 +200,22 @@ void moveBrick(brcks *bP, int mv){
     //movement
     if(mv == KEY_UP){
         //rotate
-        // x = x - F
-        // y = y - F
+        // nx = cx - F
+        // ny = cy - F
         // where F = sum(x, y) where x, y relative to first stone.
         
+        for(i = 0;i < 4;i++){
+            float cX = bP[0].brick[cB].stn[i].x;
+            float cY = bP[0].brick[cB].stn[i].y;
+            int F = cX + cY;
+            
+            float newX = (cX - F);
+            float newY = (cY - F);
+            bP[0].brick[cB].stn[i].x = newX;
+            bP[0].brick[cB].stn[i].y = newY;
+
+            mvprintw(5+i, 25, "F: %d, cX/cY: %f/%f - newX/Y: %f/%f", F, cX, cY, newX, newY);
+        }
 
 
     }else if(mv == KEY_DOWN){
