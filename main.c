@@ -49,8 +49,8 @@ int main(void){
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
-        //usleep(30000);
-        usleep(300000);
+        usleep(60000);
+        //usleep(300000);
     }
 
     endwin();
@@ -146,8 +146,12 @@ void gravBrick(brcks *bP){
                 bP[0].brick[cB].stn[2].x += 2;
                 break;
             case 3:
-                bP[0].brick[cB].stn[3].x -= 1;
-                bP[0].brick[cB].stn[3].y += 1;
+                bP[0].brick[cB].stn[1].x = -1;
+                bP[0].brick[cB].stn[1].y = 0;
+                bP[0].brick[cB].stn[2].x = -1;
+                bP[0].brick[cB].stn[2].y = 1;
+                bP[0].brick[cB].stn[3].x = -1;
+                bP[0].brick[cB].stn[3].y = 2;
                 break;
             case 4:
                 bP[0].brick[cB].stn[1].x -= 1;
