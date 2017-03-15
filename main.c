@@ -197,14 +197,12 @@ void moveBrick(brcks *bP, int mv){
     //movement
     if(mv == KEY_UP){
         //rotate
-        switch(bP[0].brick[cB].id){
-            case 0:
-                break;
-        case 2:
-            break;
-        default:
-            break;
-        }
+        // x = x - F
+        // y = y - F
+        // where F = sum(x, y) where x, y relative to first stone.
+        
+
+
     }else if(mv == KEY_DOWN){
         bP[0].brick[cB].y++;
     }else if(mv == KEY_LEFT && colL == 0){
