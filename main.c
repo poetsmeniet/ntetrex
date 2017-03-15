@@ -49,8 +49,7 @@ int main(void){
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
-        usleep(60000);
-        //usleep(300000);
+        usleep(30000);
     }
 
     endwin();
@@ -76,16 +75,6 @@ void gravBrick(brcks *bP){
     int i, j;
     int col = 0;
     int cB = bP->curBr;
-    //get highest y 
-
-    //int hYo = 0;
-    //for(i = 0;i < 4;i++){
-    //    if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
-    //        hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
-    //}
-    //mvprintw(5, 25, "hYo: %i", hYo);
-    
-    int cnt;
     int tjek=0;
     int nY;
     int cX;
@@ -105,14 +94,8 @@ void gravBrick(brcks *bP){
                 tjek++;
         }
     }
-    cnt=nY;
-
-    mvprintw(cnt, 25, "tjek: %i, bP->tjek: %i", tjek, bP->tjek);
     
-    if(tjek < bP->tjek && cnt > 7)
-        col++;
-
-    if(cnt >= 20)
+    if(tjek < bP->tjek)
         col++;
 
     bP->tjek = tjek;
@@ -134,34 +117,38 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         int r = rand() % 5;
-        //int r=3;
+        //r=5;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
                 break;
             case 1:
-                bP[0].brick[cB].stn[1].x -= 1;
-                bP[0].brick[cB].stn[1].y += 2;
-                bP[0].brick[cB].stn[3].x -= 1;
-                bP[0].brick[cB].stn[3].y += 2;
-                break;
-            case 2:
-                bP[0].brick[cB].stn[2].x += 2;
-                break;
-            case 3:
-                //bP[0].brick[cB].stn[3].x -= 1;
-                //bP[0].brick[cB].stn[3].y += 1;
-
-                bP[0].brick[cB].stn[1].x = -1;
-                bP[0].brick[cB].stn[1].y = 0;
-                bP[0].brick[cB].stn[2].x = -1;
+                bP[0].brick[cB].stn[1].x = 0;
+                bP[0].brick[cB].stn[1].y = -1;
+                bP[0].brick[cB].stn[2].x = 0;
                 bP[0].brick[cB].stn[2].y = 1;
-                bP[0].brick[cB].stn[3].x = -1;
+                bP[0].brick[cB].stn[3].x = 0;
                 bP[0].brick[cB].stn[3].y = 2;
                 break;
+            case 2:
+                bP[0].brick[cB].stn[1].x = -1;
+                bP[0].brick[cB].stn[1].y = 0;
+                bP[0].brick[cB].stn[2].x = 0;
+                bP[0].brick[cB].stn[2].y = 1;
+                bP[0].brick[cB].stn[3].x = 1;
+                bP[0].brick[cB].stn[3].y = 1;
+                break;
+            case 3:
+                bP[0].brick[cB].stn[3].x -= 1;
+                bP[0].brick[cB].stn[3].y += 1;
+                break;
             case 4:
-                bP[0].brick[cB].stn[1].x -= 1;
-                bP[0].brick[cB].stn[1].y += 2;
+                bP[0].brick[cB].stn[1].x = 0;
+                bP[0].brick[cB].stn[1].y = -1;
+                bP[0].brick[cB].stn[2].x = 1;
+                bP[0].brick[cB].stn[2].y = 0;
+                bP[0].brick[cB].stn[3].x = 0;
+                bP[0].brick[cB].stn[3].y = 1;
                 break;
             case 5:
                 break;
@@ -207,9 +194,8 @@ void moveBrick(brcks *bP, int mv){
             colL++;
     }
 
-    //movement
+    //rotate
     if(mv == KEY_UP){
-        //rotate
         for(i = 1;i < 4;i++){
             
             float cX = bP[0].brick[cB].stn[i].x;
@@ -218,7 +204,6 @@ void moveBrick(brcks *bP, int mv){
             bP[0].brick[cB].stn[i].y = (cX * -1);
         }
         bP->tjek = 0;
-
 
     }else if(mv == KEY_DOWN){
         bP[0].brick[cB].y++;
@@ -352,7 +337,7 @@ void initBricks(brcks *bP){
     brcks brcks = {
         .curBr = 0,
         .tjek = 0,
-        .score = 0,
+        .score = bP->score,
         .brick[0] = br1,
     };
 
