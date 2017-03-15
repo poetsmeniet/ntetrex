@@ -78,12 +78,12 @@ void gravBrick(brcks *bP){
     int cB = bP->curBr;
     //get highest y 
 
-    int hYo = 0;
-    for(i = 0;i < 4;i++){
-        if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
-            hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
-    }
-    mvprintw(5, 25, "hYo: %i", hYo);
+    //int hYo = 0;
+    //for(i = 0;i < 4;i++){
+    //    if( (bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) > hYo)
+    //        hYo = bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
+    //}
+    //mvprintw(5, 25, "hYo: %i", hYo);
     
     int cnt;
     int tjek=0;
@@ -107,8 +107,10 @@ void gravBrick(brcks *bP){
     }
     cnt=nY;
 
-    if(tjek != bP->tjek && cnt > 7)
-        //col++;
+    mvprintw(cnt, 25, "tjek: %i, bP->tjek: %i", tjek, bP->tjek);
+    
+    if(tjek < bP->tjek && cnt > 7)
+        col++;
 
     if(cnt >= 20)
         col++;
@@ -215,6 +217,7 @@ void moveBrick(brcks *bP, int mv){
             bP[0].brick[cB].stn[i].x = cY;
             bP[0].brick[cB].stn[i].y = (cX * -1);
         }
+        bP->tjek = 0;
 
 
     }else if(mv == KEY_DOWN){
