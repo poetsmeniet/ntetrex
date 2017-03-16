@@ -1,10 +1,4 @@
 # ntetrex
 Ncurses tetris 
 
-Todo:
-
-!- write brick generator
-!- generic collision detection
-! write generic rotater
-!- rotate around second stone
-- fix rotate wall colision
+Had some fun coding this classic time guzzler. Includes collision detection, rotation matrix, gravity, user input, funky extensible data structure, score counter, "random" brick spawning and awesome line break animation
