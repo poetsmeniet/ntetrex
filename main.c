@@ -204,7 +204,7 @@ void moveBrick(brcks *bP, int mv){
         }
         bP->tjek = 0;
 
-    }else if(mv == KEY_DOWN){
+    }else if(mv == KEY_DOWN && bP[0].br[cB].y > 3){
         bP[0].br[cB].y++;
     }else if(mv == KEY_LEFT && colL == 0){
         bP[0].br[cB].x--;
