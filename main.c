@@ -117,7 +117,7 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         int r = rand() % 5;
-        //r=5;
+        r=1;
         switch(r){
             case 0:
                 bP[0].brick[cB].stn[2].y -= 2;
@@ -197,7 +197,6 @@ void moveBrick(brcks *bP, int mv){
     //rotate
     if(mv == KEY_UP){
         for(i = 1;i < 4;i++){
-            
             float cX = bP[0].brick[cB].stn[i].x;
             float cY = bP[0].brick[cB].stn[i].y;
             bP[0].brick[cB].stn[i].x = cY;
