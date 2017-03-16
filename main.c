@@ -275,6 +275,13 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     if(intro){
         delay = 10000;
         initscr();
+
+        int x, y, c;
+        c=0;y=10;x=5;
+        start_color();
+        init_pair (c, x, y);
+        attrset (COLOR_PAIR(c));
+
         noecho();
         keypad(stdscr, TRUE);
         curs_set(FALSE);
