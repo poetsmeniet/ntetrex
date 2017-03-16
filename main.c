@@ -22,7 +22,7 @@ typedef struct bricks{
     int curBr;
     int tjek;
     int score;
-    struct brick brick[4];
+    struct brick br[4];
 }brcks;
 
 void drawStage(int w, int h, _Bool intro, brcks *bP);
@@ -64,9 +64,9 @@ void printBrick(brcks *bP){
     //print brick, stone coords are relative to each other
     int x, y;
     for(i = 0;i < 4;i++){
-        y = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y;
-        x = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x;
-        mvprintw(y, x, "%c", bP[0].brick[cB].body);
+        y = bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y;
+        x = bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[i].x;
+        mvprintw(y, x, "%c", bP[0].br[cB].body);
     }
     refresh();
 }
@@ -79,15 +79,15 @@ void gravBrick(brcks *bP){
     int nY;
     int cX;
     for(i = 0;i < 4;i++){
-        nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[i].y) + 1;
-        cX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[i].x);
+        nY = (bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y) + 1;
+        cX = (bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[i].x);
 
         int stoneY;
         int stoneX;
 
         for(j = 0;j < 4;j++){
-            stoneY = bP[0].brick[cB].y + bP[0].brick[cB].stn[0].y + bP[0].brick[cB].stn[j].y;
-            stoneX = bP[0].brick[cB].x + bP[0].brick[cB].stn[0].x + bP[0].brick[cB].stn[j].x;
+            stoneY = bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[j].y;
+            stoneX = bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[j].x;
             
             //detect collision
             if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
@@ -104,11 +104,11 @@ void gravBrick(brcks *bP){
     if(col == 0){
         int i;
         for(i = 0;i < 4;i++){
-            int y = bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y;
-            int x = bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x;
+            int y = bP[0].br[cB].y + bP[0].br[cB].stn[i].y;
+            int x = bP[0].br[cB].x + bP[0].br[cB].stn[i].x;
             mvprintw(y, x, " ");
         }
-        bP[0].brick[cB].y += 0.05;
+        bP[0].br[cB].y += 0.05;
     }else{
         //respawn
         initBricks(bP);
@@ -117,38 +117,37 @@ void gravBrick(brcks *bP){
         time_t t;
         srand((unsigned) time(&t));
         int r = rand() % 5;
-        r=1;
         switch(r){
             case 0:
-                bP[0].brick[cB].stn[2].y -= 2;
+                bP[0].br[cB].stn[2].y -= 2;
                 break;
             case 1:
-                bP[0].brick[cB].stn[1].x = 0;
-                bP[0].brick[cB].stn[1].y = -1;
-                bP[0].brick[cB].stn[2].x = 0;
-                bP[0].brick[cB].stn[2].y = 1;
-                bP[0].brick[cB].stn[3].x = 0;
-                bP[0].brick[cB].stn[3].y = 2;
+                bP[0].br[cB].stn[1].x = 0;
+                bP[0].br[cB].stn[1].y = -1;
+                bP[0].br[cB].stn[2].x = 0;
+                bP[0].br[cB].stn[2].y = 1;
+                bP[0].br[cB].stn[3].x = 0;
+                bP[0].br[cB].stn[3].y = 2;
                 break;
             case 2:
-                bP[0].brick[cB].stn[1].x = -1;
-                bP[0].brick[cB].stn[1].y = 0;
-                bP[0].brick[cB].stn[2].x = 0;
-                bP[0].brick[cB].stn[2].y = 1;
-                bP[0].brick[cB].stn[3].x = 1;
-                bP[0].brick[cB].stn[3].y = 1;
+                bP[0].br[cB].stn[1].x = -1;
+                bP[0].br[cB].stn[1].y = 0;
+                bP[0].br[cB].stn[2].x = 0;
+                bP[0].br[cB].stn[2].y = 1;
+                bP[0].br[cB].stn[3].x = 1;
+                bP[0].br[cB].stn[3].y = 1;
                 break;
             case 3:
-                bP[0].brick[cB].stn[3].x -= 1;
-                bP[0].brick[cB].stn[3].y += 1;
+                bP[0].br[cB].stn[3].x -= 1;
+                bP[0].br[cB].stn[3].y += 1;
                 break;
             case 4:
-                bP[0].brick[cB].stn[1].x = 0;
-                bP[0].brick[cB].stn[1].y = -1;
-                bP[0].brick[cB].stn[2].x = 1;
-                bP[0].brick[cB].stn[2].y = 0;
-                bP[0].brick[cB].stn[3].x = 0;
-                bP[0].brick[cB].stn[3].y = 1;
+                bP[0].br[cB].stn[1].x = 0;
+                bP[0].br[cB].stn[1].y = -1;
+                bP[0].br[cB].stn[2].x = 1;
+                bP[0].br[cB].stn[2].y = 0;
+                bP[0].br[cB].stn[3].x = 0;
+                bP[0].br[cB].stn[3].y = 1;
                 break;
             case 5:
                 break;
@@ -157,15 +156,15 @@ void gravBrick(brcks *bP){
         }
     }
 
-    if(bP[0].brick[cB].x > 22){
-        mvprintw((bP[0].brick[cB].y + 1), bP[0].brick[cB].x, "I'm FREE!");
+    if(bP[0].br[cB].x > 22){
+        mvprintw((bP[0].br[cB].y + 1), bP[0].br[cB].x, "I'm FREE!");
         refresh();
         sleep(1);
     	drawStage(15, 20, 1, bP);
         bP->score += 4;
         bP->curBr = rand() % 3;
-        bP[0].brick[cB].y = 2;
-        bP[0].brick[cB].x = 7;
+        bP[0].br[cB].y = 2;
+        bP[0].br[cB].x = 7;
     }
 }
 
@@ -183,33 +182,46 @@ void moveBrick(brcks *bP, int mv){
     int colL = 0;
     int cB = bP->curBr;
     for(i = 0;i < 4;i++){
-        float nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
-        float nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) + 1;
+        float nY = (bP[0].br[cB].y + bP[0].br[cB].stn[i].y);
+        float nX = (bP[0].br[cB].x + bP[0].br[cB].stn[i].x) + 1;
         if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colR++;
 
-        nY = (bP[0].brick[cB].y + bP[0].brick[cB].stn[i].y);
-        nX = (bP[0].brick[cB].x + bP[0].brick[cB].stn[i].x) - 1;
+        nY = (bP[0].br[cB].y + bP[0].br[cB].stn[i].y);
+        nX = (bP[0].br[cB].x + bP[0].br[cB].stn[i].x) - 1;
         if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
             colL++;
     }
 
+    //detect wall colision on rotate
+    int vrcol = 0;
+    int pMx1 = (bP[0].br[cB].x - bP[0].br[cB].stn[1].y );
+    int pPx1 = (bP[0].br[cB].x - bP[0].br[cB].stn[3].y );
+    int pMx2 = (bP[0].br[cB].x + bP[0].br[cB].stn[1].y );
+    int pPx2 = (bP[0].br[cB].x + bP[0].br[cB].stn[3].y );
+
+    if(mvinch(bP[0].br[cB].y, pMx1) != ' ' || \
+            mvinch(bP[0].br[cB].y, pPx1) != ' ' || \
+            mvinch(bP[0].br[cB].y, pMx2) != ' ' || \
+            mvinch(bP[0].br[cB].y, pPx2) != ' ')
+            vrcol = 1;
+    
     //rotate
-    if(mv == KEY_UP){
+    if(mv == KEY_UP && vrcol == 0){
         for(i = 1;i < 4;i++){
-            float cX = bP[0].brick[cB].stn[i].x;
-            float cY = bP[0].brick[cB].stn[i].y;
-            bP[0].brick[cB].stn[i].x = cY;
-            bP[0].brick[cB].stn[i].y = (cX * -1);
+            float cX = bP[0].br[cB].stn[i].x;
+            float cY = bP[0].br[cB].stn[i].y;
+            bP[0].br[cB].stn[i].x = cY;
+            bP[0].br[cB].stn[i].y = (cX * -1);
         }
         bP->tjek = 0;
 
     }else if(mv == KEY_DOWN){
-        bP[0].brick[cB].y++;
+        bP[0].br[cB].y++;
     }else if(mv == KEY_LEFT && colL == 0){
-        bP[0].brick[cB].x--;
+        bP[0].br[cB].x--;
     }else if(mv == KEY_RIGHT && colR == 0){
-        bP[0].brick[cB].x++;
+        bP[0].br[cB].x++;
     }else{
         
     }   
@@ -337,7 +349,7 @@ void initBricks(brcks *bP){
         .curBr = 0,
         .tjek = 0,
         .score = bP->score,
-        .brick[0] = br1,
+        .br[0] = br1,
     };
 
     *bP = brcks;
