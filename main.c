@@ -96,7 +96,7 @@ void gravBrick(brcks *bP){
     }
     
     //Colision detected
-    if(tjek < bP->tjek)
+    if(tjek < bP->tjek || nY >= 21)
         col++;
 
     bP->tjek = tjek;
