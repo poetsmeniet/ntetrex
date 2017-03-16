@@ -22,6 +22,7 @@ typedef struct bricks{
     int curBr;
     int tjek;
     int score;
+    float speed;
     struct brick br[4];
 }brcks;
 
@@ -36,6 +37,7 @@ void drawLabels(int w, int h, brcks *bP);
 int main(void){
     brcks b;
     initBricks(&b);
+    b.speed = 0.05;
 
     int width = 15;
     int height = 20;
@@ -119,7 +121,7 @@ void gravBrick(brcks *bP){
             int x = bP[0].br[cB].x + bP[0].br[cB].stn[i].x;
             mvprintw(y, x, " ");
         }
-        bP[0].br[cB].y += 0.05;
+        bP[0].br[cB].y += bP->speed;
     }else{
         initBricks(bP);
 
@@ -171,6 +173,7 @@ void drawLabels(int w, int h, brcks *bP){
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
     mvprintw(0, labX+2, " %d",bP[0].score);
+    mvprintw(0, labX+4, " %f",bP[0].speed);
 }
 
 void moveBrick(brcks *bP, int mv){
@@ -270,6 +273,9 @@ void detectLine(int width, int height, brcks *bP){
 
                 //increase score
                 bP->score++;
+
+                //increase speed
+                bP->speed += 0.01;
             }
             i = 3;
             j++;
@@ -308,6 +314,7 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
     mvprintw(0, labX+2, " %d",bP[0].score);
+    mvprintw(0, labX+4, " %d",bP[0].speed);
 
     //draw stage bottom
     int j;
@@ -359,6 +366,7 @@ void initBricks(brcks *bP){
         .curBr = 0,
         .tjek = 0,
         .score = bP->score,
+        .speed = bP->speed,
         .br[0] = br1,
     };
 
