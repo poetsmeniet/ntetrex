@@ -66,7 +66,7 @@ void printBrick(brcks *bP){
     for(i = 0;i < 4;i++){
         y = bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y;
         x = bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[i].x;
-        mvprintw(y, x, "%c", bP[0].br[cB].body);
+        mvaddch(y, x, ACS_CKBOARD);
     }
     refresh();
 }
@@ -90,7 +90,7 @@ void gravBrick(brcks *bP){
             stoneX = bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[j].x;
             
             //Detect collision that is not brick
-            if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
+            if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != ACS_CKBOARD)
                 tjek++;
         }
     }
@@ -172,12 +172,12 @@ void moveBrick(brcks *bP, int mv){
     for(i = 0;i < 4;i++){
         float nY = (bP[0].br[cB].y + bP[0].br[cB].stn[i].y);
         float nX = (bP[0].br[cB].x + bP[0].br[cB].stn[i].x) + 1;
-        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
+        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == ACS_CKBOARD)
             colR++;
 
         nY = (bP[0].br[cB].y + bP[0].br[cB].stn[i].y);
         nX = (bP[0].br[cB].x + bP[0].br[cB].stn[i].x) - 1;
-        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == 'O')
+        if(mvinch(nY, nX) == '|' || mvinch(nY, nX) == ACS_CKBOARD)
             colL++;
     }
 
@@ -222,7 +222,7 @@ void detectLine(int width, int height, brcks *bP){
     int j = 0;
     int cnt = 0;
     for(i = 0;i <= width;i++){
-        if(mvinch(j, i) == 'O')
+        if(mvinch(j, i) == ACS_CKBOARD)
             cnt++;
 
         if(i >=  width){
@@ -295,11 +295,14 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     i = h;
     for(j = (w + (w / 2)-2);j >= 0;j -= 3){
         mvprintw(((i - h) + 1), j, "---");
-        mvprintw(i, j, "OOO");
+        mvaddch(i, j, ACS_CKBOARD);
+        mvaddch(i, j+1, ACS_CKBOARD);
+        mvaddch(i, j+2, ACS_CKBOARD);
         mvprintw(i+1, j, "OOO");
         refresh();
     }
-    mvprintw(i, 0, "OOO");
+    mvaddch(i, 0, ACS_CKBOARD);
+    mvaddch(i, 1, ACS_CKBOARD);
     mvprintw(i+1, 0, "OOO");
 
     //draw stage walls
