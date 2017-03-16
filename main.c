@@ -49,7 +49,7 @@ int main(void){
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
-        usleep(30000);
+        usleep(DELAY1);
     }
 
     endwin();
@@ -61,7 +61,7 @@ void printBrick(brcks *bP){
     int i=1;
     int cB = bP->curBr;
 
-    //print brick, stone coords are relative to each other
+    //Print brick, stone coords are relative to 0
     int x, y;
     for(i = 0;i < 4;i++){
         y = bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y;
@@ -89,18 +89,19 @@ void gravBrick(brcks *bP){
             stoneY = bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[j].y;
             stoneX = bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[j].x;
             
-            //detect collision
+            //Detect collision that is not brick
             if(nY == stoneY+1 && cX == stoneX && mvinch(nY, cX) != 'O')
                 tjek++;
         }
     }
     
+    //Colision detected
     if(tjek < bP->tjek)
         col++;
 
     bP->tjek = tjek;
 
-    //move brick
+    //Move brick
     if(col == 0){
         int i;
         for(i = 0;i < 4;i++){
@@ -110,10 +111,9 @@ void gravBrick(brcks *bP){
         }
         bP[0].br[cB].y += 0.05;
     }else{
-        //respawn
         initBricks(bP);
 
-        //determine "random" x for stone index 1
+        //Determine "random" x for stone index 1
         time_t t;
         srand((unsigned) time(&t));
         int r = rand() % 5;
@@ -155,28 +155,16 @@ void gravBrick(brcks *bP){
                 break;
         }
     }
-
-    if(bP[0].br[cB].x > 22){
-        mvprintw((bP[0].br[cB].y + 1), bP[0].br[cB].x, "I'm FREE!");
-        refresh();
-        sleep(1);
-    	drawStage(15, 20, 1, bP);
-        bP->score += 4;
-        bP->curBr = rand() % 3;
-        bP[0].br[cB].y = 2;
-        bP[0].br[cB].x = 7;
-    }
 }
 
 void drawLabels(int w, int h, brcks *bP){
-    //draw labels
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
     mvprintw(0, labX+2, " %d",bP[0].score);
 }
 
 void moveBrick(brcks *bP, int mv){
-    //vertica colisions
+    //Vertica colisions
     int i;
     int colR = 0;
     int colL = 0;
@@ -193,7 +181,7 @@ void moveBrick(brcks *bP, int mv){
             colL++;
     }
 
-    //detect wall colision on rotate
+    //Detect wall colision on rotate
     int vrcol = 0;
     int pMx1 = (bP[0].br[cB].x - bP[0].br[cB].stn[1].y );
     int pPx1 = (bP[0].br[cB].x - bP[0].br[cB].stn[3].y );
@@ -206,7 +194,7 @@ void moveBrick(brcks *bP, int mv){
             mvinch(bP[0].br[cB].y, pPx2) != ' ')
             vrcol = 1;
     
-    //rotate
+    //Apply rotation matrix, 90d cc
     if(mv == KEY_UP && vrcol == 0){
         for(i = 1;i < 4;i++){
             float cX = bP[0].br[cB].stn[i].x;
@@ -223,7 +211,7 @@ void moveBrick(brcks *bP, int mv){
     }else if(mv == KEY_RIGHT && colR == 0){
         bP[0].br[cB].x++;
     }else{
-        
+        //Done
     }   
 
     printBrick(bP);
