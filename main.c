@@ -72,14 +72,16 @@ void printBrick(brcks *bP){
 }
 
 void gravBrick(brcks *bP){
-    int i, j;
+    int i, j, nY, cX;
     int col = 0;
     int cB = bP->curBr;
-    int tjek=0;
-    int nY;
-    int cX;
+    int tjek = 0;
+    int lnY=0; //largest next Y
     for(i = 0;i < 4;i++){
         nY = (bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y) + 1;
+        if(nY > lnY)
+            lnY = nY;
+
         cX = (bP[0].br[cB].x + bP[0].br[cB].stn[0].x + bP[0].br[cB].stn[i].x);
 
         int stoneY;
@@ -94,12 +96,15 @@ void gravBrick(brcks *bP){
                 tjek++;
         }
     }
-    mvprintw(nY-3,25,"tjek/bP->tjek: %i/%i, nY: %i",tjek, bP->tjek, nY);
-    if(tjek == 0 && bP->tjek == 0 && nY > 5){
-        mvprintw(5, 25, "EOG****");
+
+    //detect game end
+    if(mvinch(lnY, cX) == ACS_CKBOARD && nY < 6){
+        mvprintw(20,1,"Game end, well done!!");
         refresh();
-        sleep(5000);
+        sleep(500);
+        exit(0);
     }
+    
     //Colision detected
     if(tjek < bP->tjek || nY >= 21)
         col++;
@@ -194,8 +199,10 @@ void moveBrick(brcks *bP, int mv){
     int pPx2 = (bP[0].br[cB].x + bP[0].br[cB].stn[3].y );
 
     if(mvinch(bP[0].br[cB].y, pMx1) != ' ' || \
-            mvinch(bP[0].br[cB].y, pPx1) != ' ' || \
-            mvinch(bP[0].br[cB].y, pMx2) != ' ' || \
+            mvinch(bP[0].br[cB].y, pPx1) != ' ')
+            vrcol = 1;
+
+    if(mvinch(bP[0].br[cB].y, pMx2) != ' ' || \
             mvinch(bP[0].br[cB].y, pPx2) != ' ')
             vrcol = 1;
     
@@ -330,9 +337,8 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
 }
 
 void initBricks(brcks *bP){
-    usleep(300000);
     float sX = 7.0;
-    float sY = 3.0;
+    float sY = 2.0;
 
     brick br1 = {
         .id = 0,
