@@ -173,7 +173,6 @@ void drawLabels(int w, int h, brcks *bP){
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
     mvprintw(0, labX+2, " %d",bP[0].score);
-    mvprintw(0, labX+4, " %f",bP[0].speed);
 }
 
 void moveBrick(brcks *bP, int mv){
@@ -275,7 +274,7 @@ void detectLine(int width, int height, brcks *bP){
                 bP->score++;
 
                 //increase speed
-                bP->speed += 0.01;
+                bP->speed += 0.005;
             }
             i = 3;
             j++;
@@ -314,7 +313,6 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
     mvprintw(0, labX+2, " %d",bP[0].score);
-    mvprintw(0, labX+4, " %d",bP[0].speed);
 
     //draw stage bottom
     int j;
