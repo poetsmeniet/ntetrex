@@ -94,11 +94,16 @@ void gravBrick(brcks *bP){
                 tjek++;
         }
     }
-    
+    mvprintw(nY-3,25,"tjek/bP->tjek: %i/%i, nY: %i",tjek, bP->tjek, nY);
+    if(tjek == 0 && bP->tjek == 0 && nY > 5){
+        mvprintw(5, 25, "EOG****");
+        refresh();
+        sleep(5000);
+    }
     //Colision detected
     if(tjek < bP->tjek || nY >= 21)
         col++;
-
+     
     bP->tjek = tjek;
 
     //Move brick
@@ -325,8 +330,9 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
 }
 
 void initBricks(brcks *bP){
+    usleep(300000);
     float sX = 7.0;
-    float sY = 2.0;
+    float sY = 3.0;
 
     brick br1 = {
         .id = 0,
