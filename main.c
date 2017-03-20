@@ -126,9 +126,9 @@ void gravBrick(brcks *bP){
         initBricks(bP);
 
         //Determine "random" x for stone index 1
-        time_t t;
-        srand((unsigned) time(&t));
-        int r = rand() % 5;
+        //time_t t;
+        //srand((unsigned) time(&t));
+        int r = rand() % 6;
         switch(r){
             case 0:
                 bP[0].br[cB].stn[2].y -= 2;
