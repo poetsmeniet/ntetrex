@@ -44,7 +44,7 @@ int main(void){
     drawStage(width, height, 1, &b);
 
     while(1){
-        timeout(0);
+        //timeout(0);
         int mv = getch();
         moveBrick(&b, mv);
         printBrick(&b);
@@ -126,8 +126,6 @@ void gravBrick(brcks *bP){
         initBricks(bP);
 
         //Determine "random" x for stone index 1
-        //time_t t;
-        //srand((unsigned) time(&t));
         int r = rand() % 6;
         switch(r){
             case 0:
@@ -288,6 +286,7 @@ void detectLine(int width, int height, brcks *bP){
 void drawStage(int w, int h, _Bool intro, brcks *bP){
     int delay;
     int i;
+    timeout(0);
 
     if(intro){
         delay = 10000;
