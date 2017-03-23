@@ -24,7 +24,7 @@ freely, subject to the following restrictions:
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#define DELAY1 40000
+#define DELAY1 20000
 
 struct stone{
     float x;
@@ -58,17 +58,16 @@ void drawLabels(int w, int h, brcks *bP);
 int main(void){
     brcks b;
     initBricks(&b);
-    b.speed = 0.05;
+    b.speed = 0.02;
 
     int width = 15;
     int height = 20;
     drawStage(width, height, 1, &b);
 
     while(1){
-        //timeout(0);
         int mv = getch();
         moveBrick(&b, mv);
-        printBrick(&b);
+        //printBrick(&b);
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
@@ -293,7 +292,7 @@ void detectLine(int width, int height, brcks *bP){
                 bP->score++;
 
                 //increase speed
-                bP->speed += 0.005;
+                bP->speed += 0.002;
             }
             i = 3;
             j++;
