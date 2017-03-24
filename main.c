@@ -52,6 +52,7 @@ void moveBrick(brcks *bP, int mv);
 void initBricks(brcks *bP);
 void printBrick(brcks *bP);
 void gravBrick(brcks *bP);
+void colDet(brcks *bP);
 void detectLine(int width, int height, brcks *bP);
 void drawLabels(int w, int h, brcks *bP);
 
@@ -67,7 +68,7 @@ int main(void){
     while(1){
         int mv = getch();
         moveBrick(&b, mv);
-        //printBrick(&b);
+	colDet(&b);
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
@@ -93,7 +94,7 @@ void printBrick(brcks *bP){
     refresh();
 }
 
-void gravBrick(brcks *bP){
+void colDet(brcks *bP){
     int i, j, nY, cX;
     int col = 0;
     int cB = bP->curBr;
@@ -128,21 +129,13 @@ void gravBrick(brcks *bP){
     }
     
     //Colision detected
-    if(tjek < bP->tjek || nY >= 21)
+    if(tjek < bP->tjek || nY >= 20)
         col++;
      
     bP->tjek = tjek;
 
-    //Move brick
-    if(col == 0){
-        int i;
-        for(i = 0;i < 4;i++){
-            int y = bP[0].br[cB].y + bP[0].br[cB].stn[i].y;
-            int x = bP[0].br[cB].x + bP[0].br[cB].stn[i].x;
-            mvprintw(y, x, " ");
-        }
-        bP[0].br[cB].y += bP->speed;
-    }else{
+    //respawn
+    if(col != 0){
         initBricks(bP);
 
         //Determine "random" x for stone index 1
@@ -185,6 +178,18 @@ void gravBrick(brcks *bP){
                 break;
         }
     }
+}
+
+void gravBrick(brcks *bP){
+    //Gravitate brick
+    int cB = bP->curBr;
+    int i;
+    for(i = 0;i < 4;i++){
+        int y = bP[0].br[cB].y + bP[0].br[cB].stn[i].y;
+        int x = bP[0].br[cB].x + bP[0].br[cB].stn[i].x;
+        mvprintw(y, x, " ");
+    }
+    bP[0].br[cB].y += bP->speed;
 }
 
 void drawLabels(int w, int h, brcks *bP){
@@ -331,6 +336,7 @@ void drawStage(int w, int h, _Bool intro, brcks *bP){
     //draw labels
     mvprintw(0, (w/2)-1, "NtetreX");
     int labX = ((w + (w / 8)));
+    bP[0].score = 0;
     mvprintw(0, labX+2, " %d",bP[0].score);
 
     //draw stage bottom
