@@ -129,7 +129,7 @@ int colDet(brcks *bP){
     }
     
     //Collision detected
-    if(tjek < bP->tjek || nY >= 20)
+    if(tjek < bP->tjek)
         col += 0.1;
      
     bP->tjek = tjek;
