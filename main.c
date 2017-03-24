@@ -52,7 +52,7 @@ void moveBrick(brcks *bP, int mv);
 void initBricks(brcks *bP);
 void printBrick(brcks *bP);
 void gravBrick(brcks *bP);
-void colDet(brcks *bP);
+int colDet(brcks *bP);
 void detectLine(int width, int height, brcks *bP);
 void drawLabels(int w, int h, brcks *bP);
 
@@ -68,7 +68,7 @@ int main(void){
     while(1){
         int mv = getch();
         moveBrick(&b, mv);
-	colDet(&b);
+        colDet(&b);
         gravBrick(&b);
         detectLine(width, height, &b);
         drawLabels(width, height, &b);
@@ -94,9 +94,9 @@ void printBrick(brcks *bP){
     refresh();
 }
 
-void colDet(brcks *bP){
+int colDet(brcks *bP){
     int i, j, nY, cX;
-    int col = 0;
+    float col = 0;
     int cB = bP->curBr;
     int tjek = 0;
     int lnY=0; //largest next Y
@@ -128,14 +128,28 @@ void colDet(brcks *bP){
         exit(0);
     }
     
-    //Colision detected
+    //Collision detected
     if(tjek < bP->tjek || nY >= 20)
-        col++;
+        col += 0.1;
      
     bP->tjek = tjek;
 
+
+    //********** debugging **********
+    float ly = 0.0;
+    float ny;
+    for(i = 0;i < 4;i++){
+        ny = (bP[0].br[cB].y + bP[0].br[cB].stn[0].y + bP[0].br[cB].stn[i].y);
+        if(ny > ly)
+            ly = ny;
+    }
+    mvprintw(nY-1, 25, "                                       ");
+    mvprintw(nY, 25, "y: %f :: col: %f, tjek: %i",ly , col, tjek);
+    //********** debugging **********
+
+
     //respawn
-    if(col != 0){
+    if(col > 0.0){
         initBricks(bP);
 
         //Determine "random" x for stone index 1
@@ -177,6 +191,9 @@ void colDet(brcks *bP){
             default:
                 break;
         }
+        return 1;
+    }else{
+        return 0;
     }
 }
 
@@ -247,10 +264,14 @@ void moveBrick(brcks *bP, int mv){
         bP[0].br[cB].x--;
     }else if(mv == KEY_RIGHT && colR == 0){
         bP[0].br[cB].x++;
+    }else if(mv == 'p' && colR == 0){
+        mvprintw(2, 25, "SLEEEEEP");
+        printBrick(bP);
+        sleep(10);
+        mvprintw(2, 25, "         ");
     }else{
         //Done
     }   
-
     printBrick(bP);
 }
 
